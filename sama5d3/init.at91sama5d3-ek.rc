@@ -1,0 +1,75 @@
+import init.miura.usb.rc
+
+on early-init
+   start ueventd
+   copy /system/initlogo.rle /initlogo.rle
+
+on post-fs-data
+#  For DHCP
+   mkdir /data/misc/dhcp 0770 dhcp dhcp
+   chown dhcp dhcp /data/misc/dhcp
+
+# Define for camera
+    mkdir /tmp 0777 system system
+   
+on init
+# The DPI settings for our display (default 160)
+   setprop ro.sf.lcd_density 200
+
+# Enable USB Mass Storage and ADB
+    setprop persist.sys.usb.config mass_storage,adb
+
+# Change the vm heap size (default 16m)
+   setprop dalvik.vm.heapsize 32m
+
+
+on boot
+# lowmemorykiller parametors
+   write /sys/module/lowmemorykiller/parameters/adj 0,1,2,4,9,15
+   write /sys/module/lowmemorykiller/parameters/minfree 0,58,117,235,529,1000
+
+# Define for Backlight,let Android have the permission to access linux sysfs of backlight
+   chmod 0777 /sys/class/backlight/backlight/brightness
+   chown system system /sys/class/backlight/backlight/brightness
+ # Make Calibrate App have the permisson to access linux kernel parameters
+   chown system system /sys/module/atmel_tsadcc/parameters/calibrated
+   chown system system /sys/module/atmel_tsadcc/parameters/tx1
+   chown system system /sys/module/atmel_tsadcc/parameters/ty1
+   chown system system /sys/module/atmel_tsadcc/parameters/tz1
+   chown system system /sys/module/atmel_tsadcc/parameters/tx2
+   chown system system /sys/module/atmel_tsadcc/parameters/ty2
+   chown system system /sys/module/atmel_tsadcc/parameters/tz2
+   chown system system /sys/module/atmel_tsadcc/parameters/ts
+
+# DHCPCD
+# # eth0 
+service dhcpcd_eth0 /system/bin/dhcpcd -ABKL
+    class main
+    disabled
+    oneshot
+
+# IP Renew
+# # eth0
+service iprenew_eth0 /system/bin/dhcpcd -n
+    class main
+    disabled
+    oneshot
+
+# DHCPCD
+# # eth1
+service dhcpcd_eth1 /system/bin/dhcpcd -ABKL
+    class main
+    disabled
+    oneshot
+
+# IP Renew
+# # eth1
+service iprenew_eth1 /system/bin/dhcpcd -n
+    class main
+    disabled
+    oneshot
+
+on fs
+	export EXTERNAL_STORAGE /mnt/sdcard
+	mkdir /mnt/sdcard 0000 system system
+	symlink /mnt/sdcard /sdcard

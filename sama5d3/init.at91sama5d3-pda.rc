@@ -1,0 +1,51 @@
+import init.miura.usb.rc
+
+on early-init
+   start ueventd
+   copy /system/initlogo.rle /initlogo.rle
+
+on post-fs-data
+#  For DHCP
+   mkdir /data/misc/dhcp 0770 dhcp dhcp
+   chown dhcp dhcp /data/misc/dhcp
+
+
+on init
+# The DPI settings for our display (default 160)
+   setprop ro.sf.lcd_density 120
+
+# Enable USB Mass Storage and ADB
+    setprop persist.sys.usb.config mass_storage,adb
+
+# Change the vm heap size (default 16m)
+   setprop dalvik.vm.heapsize 32m
+
+
+on boot
+# lowmemorykiller parametors
+   write /sys/module/lowmemorykiller/parameters/adj 0,1,2,4,9,15
+   write /sys/module/lowmemorykiller/parameters/minfree 0,58,117,235,529,1000
+
+# Define for Backlight,let Android have the permission to access linux sysfs of backlight
+   chmod 0777 /sys/class/backlight/backlight/brightness
+   chown system system /sys/class/backlight/backlight/brightness
+# Disable touch calibration,PDA dm touch do not need calibration.
+   setprop dev.calibrate.parameters 0
+
+# DHCPCD
+# # eth0 
+service dhcpcd_eth0 /system/bin/dhcpcd -ABKL
+    class main
+    disabled
+    oneshot
+
+# IP Renew
+# # eth0
+service iprenew_eth0 /system/bin/dhcpcd -n
+    class main
+    disabled
+    oneshot
+on fs
+	export EXTERNAL_STORAGE /mnt/sdcard
+	mkdir /mnt/sdcard 0000 system system
+	symlink /mnt/sdcard /sdcard
