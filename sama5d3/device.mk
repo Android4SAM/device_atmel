@@ -62,6 +62,6 @@ include $(common_dir)/bootlogo/800*480/Android_Copy.mk
 include $(common_dir)/config/Android_Copy.mk
 
 #For audio
-include $(TOPDIR)/external/alsa-lib/src/conf/Android_Copy.mk 
+include $(TOPDIR)external/alsa-lib/src/conf/Android_Copy.mk 
 #Include this mk file to install some ogg files to our system
 include $(TOPDIR)frameworks/base/data/sounds/AllAudio.mk
