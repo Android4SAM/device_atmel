@@ -27,4 +27,5 @@ TARGET_SHELL := ash
 
 #init.rc
 TARGET_PROVIDES_INIT_RC := true
-
+#Bluetooth
+BOARD_HAVE_BLUETOOTH := true
