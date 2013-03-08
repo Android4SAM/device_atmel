@@ -27,7 +27,11 @@ PRODUCT_COPY_FILES += \
 # Publish that we support the live wallpaper feature.
 PRODUCT_COPY_FILES += packages/wallpapers/LivePicker/android.software.live_wallpaper.xml:/system/etc/permissions/android.software.live_wallpaper.xml  \
 frameworks/base/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
-frameworks/base/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml 
+frameworks/base/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
+frameworks/base/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml
+
+PRODUCT_PROPERTY_OVERRIDES := \
+	wifi.interface=wlan0
 
 PRODUCT_PACKAGES += \
 	Calibrate \
@@ -60,6 +64,9 @@ include $(common_dir)/bootlogo/800*480/Android_Copy.mk
 
 #Use our own vold.conf for sd card auto mount and asound.conf for Music configuration
 include $(common_dir)/config/Android_Copy.mk
+
+#Include this Android.mk to make to copy the config file needed for wifi
+include $(common_dir)/config/wifi/Android_Copy.mk
 
 #For audio
 include $(TOPDIR)external/alsa-lib/src/conf/Android_Copy.mk 
