@@ -14,5 +14,6 @@ PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/atmel_touch_screen_controller.idc:system/usr/idc/atmel_touch_screen_controller.idc \
         $(LOCAL_PATH)/Atmel_maXTouch_Touchscreen.idc:system/usr/idc/Atmel_maXTouch_Touchscreen.idc     \
 	$(LOCAL_PATH)/wallpaper_info.xml:data/system/wallpaper_info.xml \
+	$(LOCAL_PATH)/media_profiles.xml:system/etc/media_profiles.xml \
 	$(LOCAL_PATH)/rtk8723a.bin:system/etc/firmware/rtk8723a.bin 	
 
