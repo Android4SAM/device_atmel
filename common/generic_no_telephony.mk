@@ -32,6 +32,7 @@ PRODUCT_PACKAGES := \
     Gallery \
     LatinIME \
     Launcher2 \
+    Mms \
     Music \
     MusicFX \
     Provision \
