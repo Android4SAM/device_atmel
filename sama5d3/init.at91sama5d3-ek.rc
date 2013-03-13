@@ -91,6 +91,3 @@ on fs
 	export EXTERNAL_STORAGE /mnt/sdcard
 	mkdir /mnt/sdcard 0000 system system
 	symlink /mnt/sdcard /sdcard
-	chmod 0777 /sys/class/rfkill/rfkill0/state
-	chown bluetooth bluetooth /sys/class/rfkill/rfkill0/state
-	write /sys/class/rfkill/rfkill0/state 0
