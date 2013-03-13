@@ -21,3 +21,14 @@
 #we will use the patch as the android source patch
 
 add_lunch_combo sama5d3-eng
+
+function mkubi_image()
+{
+	$(gettop)/device/atmel/release/Generate_ubifs_image/ubifs.sh $1 $2
+}
+
+function mksd_image()
+{
+        $(gettop)/device/atmel/release/Generate_sdcard_image/sdimage.sh $1 $2 $3 $4 $5 $6 $7 $8
+}
+

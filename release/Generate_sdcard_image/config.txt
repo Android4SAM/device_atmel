@@ -1,0 +1,2 @@
+hardware=at91sama5d3-ek
+dtbfile=sama5d31ek.dtb
