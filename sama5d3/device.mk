@@ -40,6 +40,7 @@ PRODUCT_PACKAGES += \
 	Ethernet \
 	PinyinIME \
 	libjni_pinyinime \
+	libdrmframework_jni \
 	com.android.inputmethod.pinyin.lib \
 	lights.$(TARGET_BOOTLOADER_BOARD_NAME) \
 	gralloc.$(TARGET_BOOTLOADER_BOARD_NAME) \
