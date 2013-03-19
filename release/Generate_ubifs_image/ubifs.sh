@@ -10,12 +10,12 @@ USERDATA_IMG=userdata_ubifs
 ANDROID_PATCH=$PWD
 ERRLOGFILE=make_android_ubifs.log
 
-ERROR_MESSAGE=("./ubifs.sh -b board_chip\n
-		-b Specify the board chip.We now support sam9x5 | sam9m10 | sam9g45 | sama5d3.
-		-h This message"
-		"We only support the following boards\nsam9x5 |sam9m10 | sam9g45 | sama5d3"
-		"You must specify sdcard device node.\nExample -s /dev/sdc"
-		"You must specify board chip.\nExample -b sam9x5")
+HELP_MESSAGE=("./ubifs.sh -b board_chip\n
+	-b Specify the board chip. We now support sam9x5 | sam9m10 | sam9g45 | sama5d3.
+	-h Print help message\n"
+	"We only support the following boards\nsam9x5 |sam9m10 | sam9g45 | sama5d3\n"
+	"You must specify sdcard device node.\nExample: -s /dev/sdc\n"
+	"You must specify board chip.\nExample: -b sama5d3\n")
                
 HELP()
 {
@@ -26,11 +26,11 @@ HELP()
 		echo Usage message
 	fi
 	echo "-----------------------------"
-	echo -e "${ERROR_MESSAGE[$1]}"
+	echo -e "${HELP_MESSAGE[$1]}"
 	exit
 }
 
-Diaplay()
+Display()
 {
 	echo "=============================="
 	echo "Board chip:$PRODUCT_DEVICE"
@@ -160,7 +160,7 @@ done
 if [ -z "$PRODUCT_DEVICE" ];then
 	HELP 3;
 fi
-Diaplay;
+Display;
 echo "Gnerate android ubifs file,Please wait for about 2-3 minute..."
 redirect_stdout_stderr;
 check_cmd "cd $ANDROID_PATCH/device/atmel/release/Generate_ubifs_image/"

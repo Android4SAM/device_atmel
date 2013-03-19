@@ -12,16 +12,16 @@ ERRLOGFILE=make_android_sdcard.log
 SD_USERSPACE=64M
 SD_STORAGE=1000M
 
-ERROR_MESSAGE=("./sdimage.sh -b board_chip -s /dev/sdxx [-u uImage_dir] [-d xxxM]\n
-		-b Specify the board chip.We now support sam9g45,sam9m10,sam9x5,sama5d3\n
-		-s Specify the sdcard node.Like /dev/sdc.You should plugin in the sdcard first\n
-		-u Specify the dir of the uImage if you want update kernel image.It is not a must\n
-		-d Specify the userspace size on sd card.It is not a must,default is 1000M\n
-		-h This message"
-		"We only support the following boards\nsam9g45 | sam9m10 | sam9x5 | sama5d3"
-		"You must specify sdcard device node.\nExample -s /dev/sdc"
-		"You must specify board chip.\nExample -b sam9m10"
-		"We could not find the sdcard device which you specify ")
+HELP_MESSAGE=("./sdimage.sh -b board_chip -s /dev/sdxx [-u uImage_dir] [-d xxxM]\n
+	-b Specify the board chip. We now support sam9g45,sam9m10,sam9x5,sama5d3\n
+	-s Specify the sdcard node. Like /dev/sdc. You should plugin in the sdcard first\n
+	-u Specify the dir of the uImage if you want update kernel image. It is not a must\n
+	-d Specify the userspace size on sd card.It is not a must, default is 1000M\n
+	-h Print help message\n"
+	"We only support the following boards: \nsam9g45 | sam9m10 | sam9x5 | sama5d3\n"
+	"You must specify sdcard device node\nExample: -s /dev/sdc\n"
+	"You must specify board chip\nExample: -b sam9m10\n"
+	"We could not find the sdcard device which you specify\n")
                
 WARING_MESSAGE=("We could not find uImage,please check the uImage dir!\nIf continue,we will not update uImage\n
 Continue: YES\n
@@ -46,7 +46,7 @@ HELP()
 		echo Usage message
 	fi
 	echo "-----------------------------"
-	echo -e "${ERROR_MESSAGE[$1]}"
+	echo -e "${HELP_MESSAGE[$1]}"
 	exit
 }
 
@@ -76,7 +76,7 @@ Waring()
 	fi
 }
 
-Diaplay()
+Display()
 {
 	echo "=============================="
 	echo "Sdcard:$SDCARD_DEVICE"
@@ -105,14 +105,14 @@ success_cmd()
 {
 	echo "Done!"
 	recover_stdout_stderr;
-	echo "Success:you can bootup android with this sdcard on $BOARD_ID"
+	echo "Success: you can bootup android with this sdcard on $BOARD_ID"
 	exit
 }
 
 exit_cmd()
 {
 	recover_stdout_stderr;
-	echo "Failed:please see $ERRLOGFILE for detail message!"
+	echo "Failed: please see $ERRLOGFILE for detail message!"
 	exit
 }
 
@@ -279,7 +279,7 @@ WARING_MESSAGE[8]=""
 WARING_MESSAGE[9]="What's your choice? (YES / no) "
 Waring 1 2 3 4 5 6 7 8 9;
 
-Diaplay;
+Display;
 echo "Gnerate android SD Image file,Please wait for about 2-3 minute..."
 redirect_stdout_stderr;
 
