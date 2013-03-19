@@ -70,6 +70,6 @@ include $(common_dir)/config/Android_Copy.mk
 include $(common_dir)/config/wifi/Android_Copy.mk
 
 #For audio
-include $(TOPDIR)external/alsa-lib/src/conf/Android_Copy.mk 
+include $(TOPDIR)external/alsa-lib/src/conf/Android.mk 
 #Include this mk file to install some ogg files to our system
 include $(TOPDIR)frameworks/base/data/sounds/AllAudio.mk
