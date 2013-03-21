@@ -66,9 +66,6 @@ include $(common_dir)/bootlogo/800*480/Android_Copy.mk
 #Use our own vold.conf for sd card auto mount and asound.conf for Music configuration
 include $(common_dir)/config/Android_Copy.mk
 
-#Include this Android.mk to make to copy the config file needed for wifi
-include $(common_dir)/config/wifi/Android_Copy.mk
-
 #For audio
 include $(TOPDIR)external/alsa-lib/src/conf/Android.mk 
 #Include this mk file to install some ogg files to our system
