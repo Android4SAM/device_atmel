@@ -10,7 +10,7 @@ USERDATA_IMG=userdata_ubifs
 ANDROID_PATCH=$PWD
 ERRLOGFILE=make_android_ubifs.log
 
-HELP_MESSAGE=("./ubifs.sh -b board_chip\n
+HELP_MESSAGE=("mkubi_image -b board_chip\n
 	-b Specify the board chip. We now support sam9x5 | sam9m10 | sam9g45 | sama5d3.
 	-h Print help message\n"
 	"We only support the following boards\nsam9x5 |sam9m10 | sam9g45 | sama5d3\n"
@@ -21,9 +21,9 @@ HELP()
 {
 	echo
 	if [ "$1" != "0" ];then
-		echo Error message
+		echo Error:
 	else
-		echo Usage message
+		echo Usage:
 	fi
 	echo "-----------------------------"
 	echo -e "${HELP_MESSAGE[$1]}"

@@ -12,7 +12,7 @@ ERRLOGFILE=make_android_sdcard.log
 SD_USERSPACE=64M
 SD_STORAGE=1000M
 
-HELP_MESSAGE=("./sdimage.sh -b board_chip -s /dev/sdxx [-u uImage_dir] [-d xxxM]\n
+HELP_MESSAGE=("mksd_image -b board_chip -s /dev/sdxx [-u uImage_dir] [-d xxxM]\n
 	-b Specify the board chip. We now support sam9g45,sam9m10,sam9x5,sama5d3\n
 	-s Specify the sdcard node. Like /dev/sdc. You should plugin in the sdcard first\n
 	-u Specify the dir of the uImage if you want update kernel image. It is not a must\n
@@ -41,9 +41,9 @@ HELP()
 {
 	echo
 	if [ "$1" != "0" ];then
-		echo Error message
+		echo Error:
 	else
-		echo Usage message
+		echo Usage:
 	fi
 	echo "-----------------------------"
 	echo -e "${HELP_MESSAGE[$1]}"
