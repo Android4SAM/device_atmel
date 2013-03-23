@@ -14,6 +14,8 @@ on post-fs-data
 
 # Define for camera
     mkdir /tmp 0777 system system
+# Define for bluetooth
+    insmod /system/lib/modules/rtk_btusb.ko
    
 on init
 # The DPI settings for our display (default 160)

@@ -11,7 +11,8 @@ on post-fs-data
 #  For DHCP
    mkdir /data/misc/dhcp 0770 dhcp dhcp
    chown dhcp dhcp /data/misc/dhcp
-
+#  For Bluetooth
+   insmod /system/lib/modules/rtk_btusb.ko
 
 on init
 # The DPI settings for our display (default 160)
