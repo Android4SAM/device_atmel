@@ -36,7 +36,15 @@ DTBFILES=("sama5d31ek.dtb"
           "sama5d31ek_pda.dtb"
           "sama5d33ek_pda.dtb"
           "sama5d34ek_pda.dtb")
-              
+
+SDDtbFile=("d31.dtb"
+           "d33.dtb"
+           "d34.dtb"
+           "d35.dtb"
+           "d31_pda.dtb"
+           "d33_pda.dtb"
+           "d34_pda.dtb") 
+             
 HELP()
 {
 	echo
@@ -153,42 +161,26 @@ choose_hardware()
  
 	if [  $ANSWER -gt $count  ]; then
 		echo "Warning: $ANSWER is not supported! use $DEFAULT_VALUE as default"
-		echo "hardware=${HARDWARE[$DEFAULT_NUM]}" > config.txt
+		cp at91sama5d3xek-sd-linux-dt-3.5.2.bin boot.bin
         else
-		echo "hardware=${HARDWARE[ANSWER]}" > config.txt
+		cp at91sama5d3xpda-sd-linux-dt-3.5.2.bin boot.bin
 	fi
 }
 
-choose_dtbfile()
+rename_dtbfile()
 {
         local DEFAULT_NUM DEFAULT_VALUE ANSWER
         DEFAULT_NUM=0
         DEFAULT_VALUE=sama5d31ek.dtb
         
-  	echo ""
-        echo "Supported dtb files are:"
         for count in $(seq 0 $((${#DTBFILES[@]} - 1)));do
-                echo "      $count. ${DTBFILES[count]}"
-        done
-
-        echo -n "Which would you like? ["$DEFAULT_NUM"] "       
-        read ANSWER
-        
-	if [  $ANSWER -gt $count  ] ;then
-		echo "Warning: $ANSWER is not supported! use $DEFAULT_VALUE as default"
-		echo "dtbfile=${DTBFILES[$DEFAULT_NUM]}" >> config.txt
-	else
-		echo "dtbfile=${DTBFILES[ANSWER]}" >> config.txt
+	if [ -e ${DTBFILES[count]} ] ; then
+        	mv ${DTBFILES[count]} ${SDDtbFile[count]}
 	fi
+        done
 }
-
 if [ -z "$1" ];then
 	HELP 0;
-fi
-
-if [ "$var_boardchip" = "sama5d3" ]; then
-choose_hardware;
-choose_dtbfile;
 fi
 
 until [ -z "$1" ]
@@ -266,6 +258,13 @@ if [ -n "$UIMAGE_DIR" ];then
 	if [ ! -e "$UIMAGE_DIR" ];then
 		Waring 0;
 	fi
+fi
+
+if [ "$var_boardchip" = "sama5d3" ]; then
+check_cmd "cd $ANDROID_PATCH/device/atmel/release/Generate_sdcard_image/"
+choose_hardware;
+rename_dtbfile;
+check_cmd "cd $ANDROID_PATCH"
 fi
 
 WARING_MESSAGE[1]="The next step will make partitions on the \nSD Card device \"$SDCARD_DEVICE\" as you specified.\n"
