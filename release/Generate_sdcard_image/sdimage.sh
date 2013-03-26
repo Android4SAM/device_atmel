@@ -317,19 +317,24 @@ n
 p
 2
 +
-+500M
++200M
 n
 p
 3
 +
-+$SD_STORAGE
++500M
+n
+p
+4
++
++
 w
 end
 sleep 5
 umount "$SDCARD_DEVICE"1
 umount "$SDCARD_DEVICE"2
 check_cmd "mkfs.msdos -F 32 "$SDCARD_DEVICE"1"
-check_cmd "mkdir boot"
+check_cmd "mkdir boot -p"
 check_cmd "mount "$SDCARD_DEVICE"1 boot"
 check_cmd "cp boot_$PRODUCT_DEVICE/* boot/"
 check_cmd "cp config.txt boot/"
@@ -340,19 +345,16 @@ check_cmd "umount boot"
 check_cmd "rm -rf boot"
 
 check_cmd "mkfs.ext2 "$SDCARD_DEVICE"2"
-check_cmd "mkdir root"
-check_cmd "mount "$SDCARD_DEVICE"2 root"
-check_cmd "cp -a $ANDROID_PATCH/out/target/product/$PRODUCT_DEVICE/root/* ./root"
-check_cmd "cd ./root/system/"
-check_cmd "cp -a $ANDROID_PATCH/out/target/product/$PRODUCT_DEVICE/system/* ./"
-check_cmd "cp ./initlogo.rle ../"
-check_cmd "cd .."
-check_cmd "cp -a $ANDROID_PATCH/out/target/product/$PRODUCT_DEVICE/data/* ./data/"
-check_cmd "chmod 777 ../root/ -R"
-check_cmd "cd .."
-check_cmd "cp boot_$PRODUCT_DEVICE/vold.fstab ./root/system/etc/vold.fstab"
-check_cmd "cp boot_$PRODUCT_DEVICE/init.rc ./root/init.rc"
+check_cmd "mkdir system -p"
+check_cmd "mount "$SDCARD_DEVICE"2 system"
+check_cmd "cp -a $ANDROID_PATCH/out/target/product/$PRODUCT_DEVICE/system/* ./system"
+check_cmd "cp boot_$PRODUCT_DEVICE/vold.fstab ./system/etc/vold.fstab"
 check_cmd "sudo umount "$SDCARD_DEVICE"2"
-check_cmd "rm -rf root"
-check_cmd "mkfs.msdos -F 32 "$SDCARD_DEVICE"3"
+check_cmd "mkfs.ext2 "$SDCARD_DEVICE"3"
+check_cmd "mkdir data -p"
+check_cmd "mount "$SDCARD_DEVICE"3 data" 
+check_cmd "cp -a $ANDROID_PATCH/out/target/product/$PRODUCT_DEVICE/data/* ./data/"
+check_cmd "chmod 0777 -R data"
+check_cmd "sudo umount "$SDCARD_DEVICE"3"
+check_cmd "mkfs.msdos -F 32 "$SDCARD_DEVICE"4"
 success_cmd;

@@ -24,4 +24,4 @@
 # dev_mount sdcard /sdcard 2 /devices/platform/goldfish_mmc.0 /devices/platform/msm_sdcc.2/mmc_host/mmc1
 
 # For sdcard, we mount the 3rd partition, if auto is set, it will mount the 1st, only 20M 
-dev_mount sdcard /mnt/sdcard 3 /block/mmcblk0
+dev_mount sdcard /mnt/sdcard 4 /block/mmcblk0
