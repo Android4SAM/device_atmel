@@ -62,6 +62,7 @@ PRODUCT_PACKAGES += \
 #So android will show an boot logo at bootup time
 #After show the logo,android will remove the picture,so we use a command in init.atmel.rc to copy this picture
 include $(common_dir)/bootlogo/800*480/Android_Copy.mk
+include $(common_dir)/bootlogo/480*272/Android_Copy.mk
 
 #Use our own vold.conf for sd card auto mount and asound.conf for Music configuration
 include $(common_dir)/config/Android_Copy.mk

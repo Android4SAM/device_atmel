@@ -2,7 +2,7 @@ import init.miura.usb.rc
 
 on early-init
    start ueventd
-   copy /system/initlogo.rle /initlogo.rle
+   copy /system/initlogo_pda.rle /initlogo.rle
 
 on post-fs-data
 #  For wifi
