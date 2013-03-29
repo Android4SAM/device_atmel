@@ -19,7 +19,7 @@ on post-fs-data
    
 on init
 # The DPI settings for our display (default 160)
-   setprop ro.sf.lcd_density 200
+   setprop ro.sf.lcd_density 213
 
 # Enable USB Mass Storage and ADB
     setprop persist.sys.usb.config mass_storage,adb

@@ -56,7 +56,8 @@ PRODUCT_PACKAGES += \
 	libasound \
 	audio.primary.$(TARGET_BOOTLOADER_BOARD_NAME) \
 	libaudiopolicy \
-	alsa.default
+	alsa.default \
+	drmserver
 
 #Include this Android.mk to copy the initlogo.rle
 #So android will show an boot logo at bootup time
