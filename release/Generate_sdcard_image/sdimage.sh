@@ -11,19 +11,20 @@ ANDROID_PATCH=$PWD
 ERRLOGFILE=make_android_sdcard.log
 SD_USERSPACE=64M
 SD_STORAGE=1000M
-
-HELP_MESSAGE=("mksd_image -b board_chip -s /dev/sdxx [-u uImage_dir] [-d xxxM]\n
+FORCE_REMOVE=false
+HELP_MESSAGE=("mksd_image -b board_chip -s /dev/sdxx [-u uImage_dir] [-d xxxM] --force\n
 	-b Specify the board chip. We now support sam9g45,sam9m10,sam9x5,sama5d3\n
 	-s Specify the sdcard node. Like /dev/sdc. You should plugin in the sdcard first\n
 	-u Specify the dir of the uImage if you want update kernel image. It is not a must\n
 	-d Specify the userspace size on sd card.It is not a must, default is 1000M\n
-	-h Print help message\n"
+	-h Print help message\n
+	--force Force remove files without warning. This maybe dangerous.\n"
 	"We only support the following boards: \nsam9g45 | sam9m10 | sam9x5 | sama5d3\n"
 	"You must specify sdcard device node\nExample: -s /dev/sdc\n"
 	"You must specify board chip\nExample: -b sam9m10\n"
 	"We could not find the sdcard device which you specify\n")
                
-WARING_MESSAGE=("We could not find uImage,please check the uImage dir!\nIf continue,we will not update uImage\n
+WARNING_MESSAGE=("We could not find uImage,please check the uImage dir!\nIf continue,we will not update uImage\n
 Continue: YES\n
 Quit:     Any other key")
  
@@ -58,7 +59,7 @@ HELP()
 	exit
 }
 
-Waring()
+Warning()
 {	
 	echo
 	echo "****************"
@@ -68,7 +69,7 @@ Waring()
 
 	until [ -z "$1" ]
 	do
-		echo -e "${WARING_MESSAGE[$1]} "
+		echo -e "${WARNING_MESSAGE[$1]} "
 		shift
 	done
 	echo "-----------------------------"
@@ -138,10 +139,17 @@ check_cmd()
 	
 }
 
-rm_root()
+rm_dir()
 {
-	if [ -e ./root ];then
-	check_cmd "rm -rf ./root"
+	local WARNING_MESSAGE[1]="Sure to remove $1? If not sure Enter no to exit\n"
+	local WARNING_MESSAGE[2]="What's your choice? (YES / no) "
+	if [ -e "$1" ];then
+		if [ "$FORCE_REMOVE" == "false" ] ; then
+			Warning 1 2
+			check_cmd "rm -rf $1"
+		else
+			check_cmd "rm -rf $1"
+		fi
 	fi
 }
 
@@ -179,6 +187,27 @@ rename_dtbfile()
 	fi
         done
 }
+
+check_media()
+{
+	local media=`basename $SDCARD_DEVICE`
+	local is_media_removable=`cat /sys/block/$media/removable`
+	local is_media_readonly=`cat /sys/block/$media/ro`
+	
+	local WARNING_MESSAGE[1]="The media $media is not removable. Are you sure that $media is the correct device?$.\n"
+	local WARNING_MESSAGE[2]="The media $media is readonly. Please check the media status and try again$.\n"
+	local WARNING_MESSAGE[3]="Enter (YES) to go on, (no) to abort"
+	local WARNING_MESSAGE[4]="What's your choice? (YES / no) "
+	
+	if [[ $is_media_removable = 0 ]]; then
+	Warning 1 3 4
+	fi
+	
+	if [[ $is_media_readonly = 1 ]]; then
+	Warning 2 3 4
+	fi
+}
+
 if [ -z "$1" ];then
 	HELP 0;
 fi
@@ -236,6 +265,9 @@ do
 			shift
 			SD_STORAGE=$1
 		;;
+                "--force" )
+                        FORCE_REMOVE=true;
+                ;;
 		"-h" )
 			HELP 0;
 		;;
@@ -256,56 +288,30 @@ fi
 
 if [ -n "$UIMAGE_DIR" ];then
 	if [ ! -e "$UIMAGE_DIR" ];then
-		Waring 0;
+		Warning 0;
 	fi
 fi
+check_media;
 
-if [ "$var_boardchip" = "sama5d3" ]; then
-check_cmd "cd $ANDROID_PATCH/device/atmel/release/Generate_sdcard_image/"
-choose_hardware;
-rename_dtbfile;
-check_cmd "cd $ANDROID_PATCH"
-fi
-
-WARING_MESSAGE[1]="The next step will make partitions on the \nSD Card device \"$SDCARD_DEVICE\" as you specified.\n"
-WARING_MESSAGE[2]="If you say 'YES' here,\nAll data on device \"$SDCARD_DEVICE\" will * TOTALLY LOST *."
-WARING_MESSAGE[3]="You should be aware of what you are doing."
-WARING_MESSAGE[4]=""
-WARING_MESSAGE[5]="We recommend you make a double check here to \nmake sure \"$SDCARD_DEVICE\" is pointed to your SD card, \nnothing else."
-WARING_MESSAGE[6]=""
-WARING_MESSAGE[7]="If you are NOT sure, please say 'no' to abort."
-WARING_MESSAGE[8]=""
-WARING_MESSAGE[9]="What's your choice? (YES / no) "
-Waring 1 2 3 4 5 6 7 8 9;
+WARNING_MESSAGE[1]="The next step will make partitions on the \nSD Card device \"$SDCARD_DEVICE\" as you specified.\n"
+WARNING_MESSAGE[2]="If you say 'YES' here,\nAll data on device \"$SDCARD_DEVICE\" will * TOTALLY LOST *."
+WARNING_MESSAGE[3]="You should be aware of what you are doing."
+WARNING_MESSAGE[4]=""
+WARNING_MESSAGE[5]="We recommend you make a double check here to \nmake sure \"$SDCARD_DEVICE\" is pointed to your SD card, \nnothing else."
+WARNING_MESSAGE[6]=""
+WARNING_MESSAGE[7]="If you are NOT sure, please say 'no' to abort."
+WARNING_MESSAGE[8]=""
+WARNING_MESSAGE[9]="What's your choice? (YES / no) "
+Warning 1 2 3 4 5 6 7 8 9;
 
 Display;
 echo "Gnerate android SD Image file,Please wait for about 2-3 minute..."
 redirect_stdout_stderr;
 
 check_cmd "cd $ANDROID_PATCH/device/atmel/release/Generate_sdcard_image/"
-rm_root;
+rm_dir ./root >&6 
 
-for p in `ls $SDCARD_DEVICE*`
-do
-umount $p
-done
-
-fdisk $SDCARD_DEVICE <<end
-d
-1
-d
-2
-d
-3
-d
-4
-w
-end
-
-fdisk $SDCARD_DEVICE <<end
-o
-w
-end
+check_cmd "dd if=/dev/zero of="$SDCARD_DEVICE" bs=512 count=1";
 
 fdisk $SDCARD_DEVICE <<end
 n
@@ -317,15 +323,10 @@ n
 p
 2
 +
-+200M
++700M
 n
 p
 3
-+
-+500M
-n
-p
-4
 +
 +
 w
@@ -335,26 +336,28 @@ umount "$SDCARD_DEVICE"1
 umount "$SDCARD_DEVICE"2
 check_cmd "mkfs.msdos -F 32 "$SDCARD_DEVICE"1"
 check_cmd "mkdir boot -p"
-check_cmd "mount "$SDCARD_DEVICE"1 boot"
+check_cmd "mount -t vfat "$SDCARD_DEVICE"1 boot"
 check_cmd "cp boot_$PRODUCT_DEVICE/* boot/"
-check_cmd "cp config.txt boot/"
 if [ -e "$UIMAGE_DIR" ];then
 	check_cmd "cp $UIMAGE_DIR boot/UIMAGE"
 fi
+check_cmd "sync"
 check_cmd "umount boot"
-check_cmd "rm -rf boot"
-
+rm_dir boot >&6
 check_cmd "mkfs.ext2 "$SDCARD_DEVICE"2"
-check_cmd "mkdir system -p"
-check_cmd "mount "$SDCARD_DEVICE"2 system"
-check_cmd "cp -a $ANDROID_PATCH/out/target/product/$PRODUCT_DEVICE/system/* ./system"
-check_cmd "cp boot_$PRODUCT_DEVICE/vold.fstab ./system/etc/vold.fstab"
-check_cmd "sudo umount "$SDCARD_DEVICE"2"
-check_cmd "mkfs.ext2 "$SDCARD_DEVICE"3"
-check_cmd "mkdir data -p"
-check_cmd "mount "$SDCARD_DEVICE"3 data" 
+check_cmd "mkdir root"
+check_cmd "mount "$SDCARD_DEVICE"2 root"
+check_cmd "cp -a $ANDROID_PATCH/out/target/product/$PRODUCT_DEVICE/root/* ./root"
+check_cmd "cd ./root/system/"
+check_cmd "cp -a $ANDROID_PATCH/out/target/product/$PRODUCT_DEVICE/system/* ./"
+check_cmd "cp ./initlogo.rle ../"
+check_cmd "cd .."
 check_cmd "cp -a $ANDROID_PATCH/out/target/product/$PRODUCT_DEVICE/data/* ./data/"
-check_cmd "chmod 0777 -R data"
-check_cmd "sudo umount "$SDCARD_DEVICE"3"
-check_cmd "mkfs.msdos -F 32 "$SDCARD_DEVICE"4"
+check_cmd "chmod 777 ../root/ -R"
+check_cmd "cd .."
+check_cmd "cp boot_$PRODUCT_DEVICE/vold.fstab ./root/system/etc/vold.fstab"
+check_cmd "cp boot_$PRODUCT_DEVICE/init.rc ./root/init.rc"
+check_cmd "sync"
+check_cmd "sudo umount "$SDCARD_DEVICE"2"
+check_cmd "mkfs.msdos -F 32 "$SDCARD_DEVICE"3"
 success_cmd;

@@ -94,12 +94,12 @@ loglevel 3
 
 on fs
 # mount mtd partitions
-    mount ext2 /dev/block/mmcblk0p2 /system wait ro
-    mount ext2 /dev/block/mmcblk0p3 /data wait noatime nosuid nodev
+#    mount ext2 /dev/block/mmcblk0p2 /system wait ro
+#    mount ext2 /dev/block/mmcblk0p3 /data wait noatime nosuid nodev
 
 on post-fs
     # once everything is setup, no need to modify /
-    mount rootfs rootfs / ro remount
+    mount rootfs rootfs / rw remount
 
     # We chown/chmod /cache again so because mount is run as root + defaults
     chown system cache /cache
