@@ -27,24 +27,6 @@ HELP_MESSAGE=("mksd_image -b board_chip -s /dev/sdxx [-u uImage_dir] [-d xxxM] -
 WARNING_MESSAGE=("We could not find uImage,please check the uImage dir!\nIf continue,we will not update uImage\n
 Continue: YES\n
 Quit:     Any other key")
- 
-HARDWARE=("at91sama5d3-ek"
-          "at91sama5d3-pda")
-DTBFILES=("sama5d31ek.dtb"
-          "sama5d33ek.dtb"
-          "sama5d34ek.dtb"
-          "sama5d35ek.dtb"
-          "sama5d31ek_pda.dtb"
-          "sama5d33ek_pda.dtb"
-          "sama5d34ek_pda.dtb")
-
-SDDtbFile=("d31.dtb"
-           "d33.dtb"
-           "d34.dtb"
-           "d35.dtb"
-           "d31_pda.dtb"
-           "d33_pda.dtb"
-           "d34_pda.dtb") 
              
 HELP()
 {
@@ -151,41 +133,6 @@ rm_dir()
 			check_cmd "rm -rf $1"
 		fi
 	fi
-}
-
-choose_hardware()
-{  
-        local DEFAULT_NUM DEFAULT_VALUE ANSWER
-        DEFAULT_NUM=0
-        DEFAULT_VALUE=at91sama5d3-ek
-
-	echo "Supported hardware are:"
-	for count in $(seq 0 $((${#HARDWARE[@]} - 1)));do
-		echo "      $count. ${HARDWARE[count]}"
-	done
-         
-        echo -n "Which would you like? ["$DEFAULT_NUM"] "	
-	read ANSWER
- 
-	if [  $ANSWER -gt $count  ]; then
-		echo "Warning: $ANSWER is not supported! use $DEFAULT_VALUE as default"
-		cp at91sama5d3xek-sd-linux-dt-3.5.2.bin boot.bin
-        else
-		cp at91sama5d3xpda-sd-linux-dt-3.5.2.bin boot.bin
-	fi
-}
-
-rename_dtbfile()
-{
-        local DEFAULT_NUM DEFAULT_VALUE ANSWER
-        DEFAULT_NUM=0
-        DEFAULT_VALUE=sama5d31ek.dtb
-        
-        for count in $(seq 0 $((${#DTBFILES[@]} - 1)));do
-	if [ -e ${DTBFILES[count]} ] ; then
-        	mv ${DTBFILES[count]} ${SDDtbFile[count]}
-	fi
-        done
 }
 
 check_media()
@@ -344,7 +291,7 @@ fi
 check_cmd "sync"
 check_cmd "umount boot"
 rm_dir boot >&6
-check_cmd "mkfs.ext2 "$SDCARD_DEVICE"2"
+check_cmd "mkfs.ext4 "$SDCARD_DEVICE"2"
 check_cmd "mkdir root"
 check_cmd "mount "$SDCARD_DEVICE"2 root"
 check_cmd "cp -a $ANDROID_PATCH/out/target/product/$PRODUCT_DEVICE/root/* ./root"
