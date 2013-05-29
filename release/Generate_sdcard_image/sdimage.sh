@@ -284,7 +284,6 @@ umount "$SDCARD_DEVICE"2
 check_cmd "mkfs.msdos -F 32 "$SDCARD_DEVICE"1"
 check_cmd "mkdir boot -p"
 check_cmd "mount -t vfat "$SDCARD_DEVICE"1 boot"
-check_cmd "cp boot_$PRODUCT_DEVICE/* boot/"
 if [ -e "$UIMAGE_DIR" ];then
 	check_cmd "cp $UIMAGE_DIR boot/UIMAGE"
 fi
