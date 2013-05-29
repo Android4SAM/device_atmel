@@ -281,6 +281,7 @@ end
 sleep 5
 umount "$SDCARD_DEVICE"1
 umount "$SDCARD_DEVICE"2
+umount "$SDCARD_DEVICE"3
 check_cmd "mkfs.msdos -F 32 "$SDCARD_DEVICE"1"
 check_cmd "mkdir boot -p"
 check_cmd "mount -t vfat "$SDCARD_DEVICE"1 boot"
