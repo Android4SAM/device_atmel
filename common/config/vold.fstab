@@ -16,7 +16,7 @@
 # Mounts the first usable partition of the specified device
 #dev_mount sdcard /mnt/sdcard auto /devices/platform/goldfish_mmc.0 /devices/platform/msm_sdcc.2/mmc_host/mmc1
 #dev_mount sdcard /mnt/sdcard auto  /devices/platform/atmel_mci.0/mmc_host/mmc0 /devices/platform/atmel_mci.1/mmc_host/mmc1
-dev_mount sdcard /mnt/sdcard auto /block/mmcblk0 /block/mmcblk1 /block/sda
+dev_mount sdcard /storage/sdcard1 auto /block/mmcblk0 /block/mmcblk1 /block/sda
 
 ## Example of a dual card setup
 # dev_mount left_sdcard  /sdcard1  auto /devices/platform/goldfish_mmc.0 /devices/platform/msm_sdcc.2/mmc_host/mmc1
