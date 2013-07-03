@@ -63,7 +63,7 @@ exit_cmd()
 {
 	recover_stdout_stderr;
 	echo "Failed:please see $ERRLOGFILE for detail message!"
-	exit
+	exit -1
 }
 
 check_cmd()
