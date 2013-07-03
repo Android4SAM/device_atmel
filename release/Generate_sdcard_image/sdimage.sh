@@ -285,6 +285,9 @@ umount "$SDCARD_DEVICE"3
 check_cmd "mkfs.msdos -F 32 "$SDCARD_DEVICE"1"
 check_cmd "mkdir boot -p"
 check_cmd "mount -t vfat "$SDCARD_DEVICE"1 boot"
+check_cmd "cp boot_$PRODUCT_DEVICE/* boot/"
+check_cmd "rm boot/vold.fstab"
+check_cmd "rm boot/init.rc"
 if [ -e "$UIMAGE_DIR" ];then
 	check_cmd "cp $UIMAGE_DIR boot/UIMAGE"
 fi
@@ -300,7 +303,7 @@ check_cmd "cp -a $ANDROID_PATCH/out/target/product/$PRODUCT_DEVICE/system/* ./"
 check_cmd "cp ./initlogo.rle ../"
 check_cmd "cd .."
 check_cmd "cp -a $ANDROID_PATCH/out/target/product/$PRODUCT_DEVICE/data/* ./data/"
-check_cmd "chmod 777 ../root/ -R"
+check_cmd "chmod 0777 -R ./data"
 check_cmd "cd .."
 check_cmd "cp boot_$PRODUCT_DEVICE/vold.fstab ./root/system/etc/vold.fstab"
 check_cmd "cp boot_$PRODUCT_DEVICE/init.rc ./root/init.rc"
