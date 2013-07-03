@@ -1,0 +1,6 @@
+<mixer>
+  <!-- These are the initial mixer settings -->
+  <ctl name="Capture Switch" value="1" />
+  <ctl name="Capture Volume" value="28" />
+  <ctl name="Left Capture Inverting Mux" value="IN2L" />
+</mixer>

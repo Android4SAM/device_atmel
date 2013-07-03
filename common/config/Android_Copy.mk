@@ -14,7 +14,9 @@ PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/atmel_touch_screen_controller.idc:system/usr/idc/atmel_touch_screen_controller.idc \
         $(LOCAL_PATH)/Atmel_maXTouch_Touchscreen.idc:system/usr/idc/Atmel_maXTouch_Touchscreen.idc     \
 	$(LOCAL_PATH)/wallpaper_info.xml:data/system/wallpaper_info.xml \
-	$(LOCAL_PATH)/media_profiles.xml:system/etc/media_profiles.xml
+	$(LOCAL_PATH)/media_profiles.xml:system/etc/media_profiles.xml \
+	$(LOCAL_PATH)/media_codecs.xml:system/etc/media_codecs.xml \
+	$(LOCAL_PATH)/mixer_paths.xml:system/etc/mixer_paths.xml
 
 ifeq ($(PREBUILD_FIRMWARE), realtek)
 PRODUCT_COPY_FILES += \
