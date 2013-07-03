@@ -1,75 +1,57 @@
-# Include other Android.mk
+# Copyright (C) 2012 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Copy some config files: idc alsa etc...
+$(call inherit-product, device/atmel/common/config/Android_Copy.mk)
+
+# Atmel boot logo
+$(call inherit-product, device/atmel/common/bootlogo/Android_Copy.mk)
 
 LOCAL_PATH := device/atmel/sama5d3
- 
-common_dir := device/atmel/common
 
-#PRODUCT_PACKAGE_OVERLAYS := $(common_dir)/overlay
-DEVICE_PACKAGE_OVERLAYS := $(common_dir)/overlay
-
-# Copy init.rc init.atmel.rc
-PRODUCT_COPY_FILES := \
-	$(LOCAL_PATH)/init.sama5d3x-ek.rc:root/init.sama5d3x-ek.rc \
-	$(LOCAL_PATH)/init.sama5d3x-pda.rc:root/init.sama5d3x-pda.rc \
-	$(LOCAL_PATH)/init.miura.usb.rc:root/init.miura.usb.rc
-
-#ifeq ($(strip $(TARGET_PROVIDES_INIT_RC)),true)
 PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/init.rc:root/init.rc \
+        $(LOCAL_PATH)/init.sama5d3x-ek.rc:root/init.sama5d3x-ek.rc \
+	$(LOCAL_PATH)/init.sama5d3x-pda.rc:root/init.sama5d3x-pda.rc \
 	$(LOCAL_PATH)/ueventd.sama5d3x-ek.rc:root/ueventd.sama5d3x-ek.rc \
-	$(LOCAL_PATH)/ueventd.sama5d3x-pda.rc:root/ueventd.sama5d3x-pda.rc
-#endif
-	
-#PRODUCT_COPY_FILES += \
-#	$(LOCAL_PATH)/libhantro_hwdec.so:obj/lib/libhantro_hwdec.so \
-#	$(LOCAL_PATH)/libhantro_hwdec.so:system/lib/libhantro_hwdec.so
+	$(LOCAL_PATH)/ueventd.sama5d3x-pda.rc:root/ueventd.sama5d3x-pda.rc \
+        $(LOCAL_PATH)/init.sama5d3x-ek.usb.rc:root/init.sama5d3x-ek.usb.rc
 
-# Publish that we support the live wallpaper feature.
-PRODUCT_COPY_FILES += packages/wallpapers/LivePicker/android.software.live_wallpaper.xml:/system/etc/permissions/android.software.live_wallpaper.xml  \
-frameworks/base/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
-frameworks/base/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
-frameworks/base/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml \
-frameworks/base/data/etc/android.hardware.touchscreen.multitouch.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.xml
+PRODUCT_PACKAGES += \
+        Calibrate \
+        AtmelLogo \
+        Ethernet \
+        PinyinIME \
+        Mms \
+        libjni_pinyinime \
+        libdrmframework_jni \
+        com.android.inputmethod.pinyin.lib \
+        lights.$(TARGET_BOOTLOADER_BOARD_NAME) \
+		gralloc.$(TARGET_BOOTLOADER_BOARD_NAME) \
+	audio.primary.$(TARGET_BOOTLOADER_BOARD_NAME) \
+        hwcomposer.$(TARGET_BOOTLOADER_BOARD_NAME) \
+		copybit.$(TARGET_BOOTLOADER_BOARD_NAME) \
+		libGLES_ATMEL_SAM
+
+PRODUCT_PACKAGES += \
+        libethernet_jni 
+
+# These are the hardware-specific features
+PRODUCT_COPY_FILES += \
+        frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
+        frameworks/native/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
+        frameworks/native/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml 
 
 PRODUCT_PROPERTY_OVERRIDES := \
-	wifi.interface=wlan0
-
-PRODUCT_PACKAGES += \
-	Calibrate \
-        Camera    \
-	AtmelLogo \
-	Ethernet \
-	PinyinIME \
-	libjni_pinyinime \
-	libdrmframework_jni \
-	com.android.inputmethod.pinyin.lib \
-	lights.$(TARGET_BOOTLOADER_BOARD_NAME) \
-	gralloc.$(TARGET_BOOTLOADER_BOARD_NAME) \
-	hwcomposer.$(TARGET_BOOTLOADER_BOARD_NAME) \
-	copybit.$(TARGET_BOOTLOADER_BOARD_NAME) \
-        camera.$(TARGET_BOOTLOADER_BOARD_NAME)
-
-PRODUCT_PACKAGES += \
-	libethernet_jni \
-	libGLES_ATMEL_SAM
-	
-PRODUCT_PACKAGES += \
-	libasound \
-	audio.primary.$(TARGET_BOOTLOADER_BOARD_NAME) \
-	libaudiopolicy \
-	alsa.default \
-	drmserver
-
-#Include this Android.mk to copy the initlogo.rle
-#So android will show an boot logo at bootup time
-#After show the logo,android will remove the picture,so we use a command in init.atmel.rc to copy this picture
-include $(common_dir)/bootlogo/800*480/Android_Copy.mk
-include $(common_dir)/bootlogo/480*272/Android_Copy.mk
-
-#Use our own vold.conf for sd card auto mount and asound.conf for Music configuration
-include $(common_dir)/config/Android_Copy.mk
-
-#For audio
-include $(TOPDIR)external/alsa-lib/src/conf/Android.mk 
-#Include this mk file to install some ogg files to our system
-include $(TOPDIR)frameworks/base/data/sounds/AllAudio.mk
+    wifi.interface=wlan0
