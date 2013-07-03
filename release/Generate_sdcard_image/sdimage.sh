@@ -6,7 +6,7 @@
 # Created. liuxin <liuxing@embedinfo.com>
 
 RELEASE_VERSION=ver1.1
-ANDROID_VERSION=ANDROID-4.0.4_r2.1
+ANDROID_VERSION=ANDROID-4.2.2_r1.1
 ANDROID_PATCH=$PWD
 ERRLOGFILE=make_android_sdcard.log
 SD_USERSPACE=64M

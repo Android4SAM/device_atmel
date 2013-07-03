@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2009-2010 <www.Android4SAM.org>
 # Created. liuxin <liuxing@embedinfo.com>
-ANDROID_VERSION=ANDROID-4.0.4_r2.1
+ANDROID_VERSION=ANDROID-4.2.2_r1.1
 SYSTEM_IMG=system_ubifs
 USERDATA_IMG=userdata_ubifs
 ANDROID_PATCH=$PWD
