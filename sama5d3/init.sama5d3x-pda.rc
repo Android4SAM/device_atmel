@@ -15,8 +15,6 @@ on post-fs-data
 
 # Define for camera
     mkdir /tmp 0777 system system
-# Define for bluetooth
-    insmod /system/lib/modules/rtk_btusb.ko
    
 on init
 # The DPI settings for our display (default 160)
@@ -48,6 +46,11 @@ on boot
 # Define for Backlight,let Android have the permission to access linux sysfs of backlight
    chmod 0777 /sys/class/backlight/backlight/brightness
    chown system system /sys/class/backlight/backlight/brightness
+
+# Add for bluetooth
+  insmod /system/lib/modules/rtk_btusb.ko
+  chmod 0660 /dev/rtk_btusb
+  chown bluetooth net_bt_stack /dev/rtk_btusb
 
 # Disable touch calibration,PDA dm touch do not need calibration.
    setprop dev.calibrate.parameters 0

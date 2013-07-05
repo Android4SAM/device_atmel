@@ -21,5 +21,6 @@ PRODUCT_COPY_FILES += \
 ifeq ($(PREBUILD_FIRMWARE), realtek)
 PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/wlan.ko:system/lib/modules/wlan.ko \
-	$(LOCAL_PATH)/rtk8723a.bin:system/etc/firmware/rtk8723a.bin
+	$(LOCAL_PATH)/rtk_btusb.ko:system/lib/modules/rtk_btusb.ko \
+	$(LOCAL_PATH)/rtk8723a:system/etc/firmware/rtk8723a
 endif
