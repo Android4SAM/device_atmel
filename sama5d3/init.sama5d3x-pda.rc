@@ -20,8 +20,8 @@ on init
 # The DPI settings for our display (default 160)
    setprop ro.sf.lcd_density 120
 
-# Enable USB Mass Storage and ADB
-    setprop persist.sys.usb.config mass_storage,adb
+# Enable MTP and ADB
+    setprop persist.sys.usb.config mtp,adb
 
 # Change the vm heap size (default 16m)
    setprop dalvik.vm.heapsize 32m
