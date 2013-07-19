@@ -42,7 +42,8 @@ PRODUCT_PACKAGES += \
 	audio.primary.$(TARGET_BOOTLOADER_BOARD_NAME) \
         hwcomposer.$(TARGET_BOOTLOADER_BOARD_NAME) \
 		copybit.$(TARGET_BOOTLOADER_BOARD_NAME) \
-		libGLES_ATMEL_SAM
+		libGLES_ATMEL_SAM \
+	PicoLangInstaller
 
 PRODUCT_PACKAGES += \
         libethernet_jni 
