@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-$(call inherit-product, device/atmel/common/generic_no_telephony.mk)
+$(call inherit-product, device/atmel/common/headless.mk)
 $(call inherit-product, device/atmel/sama5d3/device.mk)
 
 PRODUCT_NAME := sama5d3

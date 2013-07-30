@@ -438,11 +438,11 @@ service ril-daemon /system/bin/rild
     user root
     group radio cache inet misc audio log
 
-service surfaceflinger /system/bin/surfaceflinger
-    class main
-    user system
-    group graphics drmrpc
-    onrestart restart zygote
+#service surfaceflinger /system/bin/surfaceflinger
+#    class main
+#    user system
+#    group graphics drmrpc
+#    onrestart restart zygote
 
 service zygote /system/bin/app_process -Xzygote /system/bin --zygote --start-system-server
     class main

@@ -55,4 +55,5 @@ PRODUCT_COPY_FILES += \
         frameworks/native/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml 
 
 PRODUCT_PROPERTY_OVERRIDES := \
-    wifi.interface=wlan0
+    wifi.interface=wlan0 \
+    ro.config.headless=1 
