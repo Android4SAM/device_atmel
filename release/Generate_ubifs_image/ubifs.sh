@@ -161,7 +161,7 @@ if [ -z "$PRODUCT_DEVICE" ];then
 	HELP 3;
 fi
 Display;
-echo "Gnerate android ubifs file,Please wait for about 2-3 minute..."
+echo "Generate android ubifs file, please wait for about 2-3 minutes ..."
 redirect_stdout_stderr;
 check_cmd "cd $ANDROID_PATCH/device/atmel/release/Generate_ubifs_image/"
 rm_root;
