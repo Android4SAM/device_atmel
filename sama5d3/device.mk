@@ -21,11 +21,11 @@ $(call inherit-product, device/atmel/common/bootlogo/Android_Copy.mk)
 LOCAL_PATH := device/atmel/sama5d3
 
 PRODUCT_COPY_FILES += \
-	$(LOCAL_PATH)/init.rc:root/init.rc \
+        $(LOCAL_PATH)/init.rc:root/init.rc \
         $(LOCAL_PATH)/init.sama5d3x-ek.rc:root/init.sama5d3x-ek.rc \
-	$(LOCAL_PATH)/init.sama5d3x-pda.rc:root/init.sama5d3x-pda.rc \
-	$(LOCAL_PATH)/ueventd.sama5d3x-ek.rc:root/ueventd.sama5d3x-ek.rc \
-	$(LOCAL_PATH)/ueventd.sama5d3x-pda.rc:root/ueventd.sama5d3x-pda.rc \
+        $(LOCAL_PATH)/init.sama5d3x-pda.rc:root/init.sama5d3x-pda.rc \
+        $(LOCAL_PATH)/ueventd.sama5d3x-ek.rc:root/ueventd.sama5d3x-ek.rc \
+        $(LOCAL_PATH)/ueventd.sama5d3x-pda.rc:root/ueventd.sama5d3x-pda.rc \
         $(LOCAL_PATH)/init.sama5d3x-ek.usb.rc:root/init.sama5d3x-ek.usb.rc
 
 PRODUCT_PACKAGES += \
@@ -38,12 +38,12 @@ PRODUCT_PACKAGES += \
         libdrmframework_jni \
         com.android.inputmethod.pinyin.lib \
         lights.$(TARGET_BOOTLOADER_BOARD_NAME) \
-		gralloc.$(TARGET_BOOTLOADER_BOARD_NAME) \
-	audio.primary.$(TARGET_BOOTLOADER_BOARD_NAME) \
+        gralloc.$(TARGET_BOOTLOADER_BOARD_NAME) \
+        audio.primary.$(TARGET_BOOTLOADER_BOARD_NAME) \
         hwcomposer.$(TARGET_BOOTLOADER_BOARD_NAME) \
-		copybit.$(TARGET_BOOTLOADER_BOARD_NAME) \
-		libGLES_ATMEL_SAM \
-	PicoLangInstaller
+        copybit.$(TARGET_BOOTLOADER_BOARD_NAME) \
+        libGLES_ATMEL_SAM \
+        PicoLangInstaller
 
 PRODUCT_PACKAGES += \
         libethernet_jni 
