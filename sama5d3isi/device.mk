@@ -34,16 +34,22 @@ PRODUCT_PACKAGES += \
         Ethernet \
         PinyinIME \
         Mms \
+        LegacyCamera \
         libjni_pinyinime \
         libdrmframework_jni \
         com.android.inputmethod.pinyin.lib \
         lights.$(TARGET_BOOTLOADER_BOARD_NAME) \
         gralloc.$(TARGET_BOOTLOADER_BOARD_NAME) \
-        audio.primary.$(TARGET_BOOTLOADER_BOARD_NAME) \
         hwcomposer.$(TARGET_BOOTLOADER_BOARD_NAME) \
         copybit.$(TARGET_BOOTLOADER_BOARD_NAME) \
+        camera.$(TARGET_BOOTLOADER_BOARD_NAME) \
         libGLES_ATMEL_SAM \
         PicoLangInstaller
+
+ifeq ($(strip $(BOARD_USES_ALSA_AUDIO)),true)
+PRODUCT_PACKAGES += \
+        audio.primary.$(TARGET_BOOTLOADER_BOARD_NAME)
+endif
 
 PRODUCT_PACKAGES += \
         libethernet_jni 
