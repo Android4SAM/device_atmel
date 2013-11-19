@@ -1,0 +1,128 @@
+import init.sama5d3x-ek.usb.rc
+
+on early-init
+   copy /system/initlogo.rle /initlogo.rle
+
+on post-fs-data
+   mkdir /data/media 0770 media_rw media_rw
+
+#  For wifi
+   mkdir /data/misc/wifi/sockets 0770 wifi wifi
+   chmod 0777  /dev/rfkill
+#  For DHCP
+   mkdir /data/misc/dhcp 0770 dhcp dhcp
+   chown dhcp dhcp /data/misc/dhcp
+
+# Define for camera
+    mkdir /tmp 0777 system system
+   
+on init
+# The DPI settings for our display (default 160)
+   setprop ro.sf.lcd_density 213
+
+# Enable MTP and ADB
+    setprop persist.sys.usb.config mtp,adb
+
+# Change the vm heap size (default 16m)
+   setprop dalvik.vm.heapsize 32m
+
+    mkdir /mnt/shell/emulated 0700 shell shell
+    mkdir /storage/emulated 0555 root root
+    mkdir /storage/sdcard1 0000 system system
+
+    export EXTERNAL_STORAGE /storage/emulated/legacy
+    export EMULATED_STORAGE_SOURCE /mnt/shell/emulated
+    export EMULATED_STORAGE_TARGET /storage/emulated
+
+    # Support legacy paths
+    symlink /storage/emulated/legacy /sdcard
+    symlink /storage/emulated/legacy /mnt/sdcard
+    symlink /storage/emulated/legacy /storage/sdcard0
+    symlink /mnt/shell/emulated/0 /storage/emulated/legacy
+
+
+on boot
+
+# Define for Backlight,let Android have the permission to access linux sysfs of backlight
+   chmod 0777 /sys/class/backlight/backlight/brightness
+   chown system system /sys/class/backlight/backlight/brightness
+ # Make Calibrate App have the permisson to access linux kernel parameters
+   chown system system /sys/module/atmel_tsadcc/parameters/calibrated
+   chown system system /sys/module/atmel_tsadcc/parameters/tx1
+   chown system system /sys/module/atmel_tsadcc/parameters/ty1
+   chown system system /sys/module/atmel_tsadcc/parameters/tz1
+   chown system system /sys/module/atmel_tsadcc/parameters/tx2
+   chown system system /sys/module/atmel_tsadcc/parameters/ty2
+   chown system system /sys/module/atmel_tsadcc/parameters/tz2
+   chown system system /sys/module/atmel_tsadcc/parameters/ts
+
+# add for bluetooth
+  insmod /system/lib/modules/rtk_btusb.ko
+  chmod 0660 /dev/rtk_btusb
+  chown bluetooth net_bt_stack /dev/rtk_btusb
+
+
+# virtual sdcard daemon running as media_rw (1023)
+service sdcard /system/bin/sdcard /data/media /mnt/shell/emulated 1023 1023
+    class main
+    oneshot
+
+#add for realtek wifi
+service rtw_suppl_con /system/bin/wpa_supplicant \
+      -ip2p0 -Dnl80211 -c /data/misc/wifi/p2p_supplicant.conf -e/data/misc/wifi/entropy.bin -N \
+      -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf
+      class main
+      socket wpa_wlan0 dgram 660 wifi wifi
+      disabled
+      oneshot
+
+service rtw_suppl /system/bin/wpa_supplicant -d -Dnl80211 -iwlan0 -c/data/misc/wifi/wpa_supplicant.conf
+	socket wpa_wlan0 dgram 660 wifi wifi
+	group system wifi inet
+	disabled
+	oneshot
+
+service dhcpcd_wlan0 /system/bin/dhcpcd -ABKL
+    disabled
+    oneshot
+
+service iprenew_wlan0 /system/bin/dhcpcd -n
+    disabled
+    oneshot
+
+service dhcpcd_p2p /system/bin/dhcpcd -ABKL
+    disabled
+    oneshot
+
+service iprenew_p2p /system/bin/dhcpcd -n
+    disabled
+    oneshot
+
+# DHCPCD
+# # eth0 
+service dhcpcd_eth0 /system/bin/dhcpcd -ABKL
+    class main
+    disabled
+    oneshot
+
+# IP Renew
+# # eth0
+service iprenew_eth0 /system/bin/dhcpcd -n
+    class main
+    disabled
+    oneshot
+
+# DHCPCD
+# # eth1
+service dhcpcd_eth1 /system/bin/dhcpcd -ABKL
+    class main
+    disabled
+    oneshot
+
+# IP Renew
+# # eth1
+service iprenew_eth1 /system/bin/dhcpcd -n
+    class main
+    disabled
+    oneshot
+
