@@ -10,12 +10,12 @@ USERDATA_IMG=userdata_ubifs
 ANDROID_PATCH=$PWD
 ERRLOGFILE=make_android_ubifs.log
 
-HELP_MESSAGE=("mkubi_image -b board_chip\n
-	-b Specify the board chip. We now support sam9x5 | sam9m10 | sam9g45 | sama5d3.
+HELP_MESSAGE=("mkubi_image -b build_target\n
+	-b Specify the build target. We now support sam9x5 | sam9m10 | sam9g45 | sama5d3 | sama5d3isi.
 	-h Print help message\n"
-	"We only support the following boards\nsam9x5 |sam9m10 | sam9g45 | sama5d3\n"
+	"We only support the following build targets\nsam9x5 |sam9m10 | sam9g45 | sama5d3 | sama5d3isi\n"
 	"You must specify sdcard device node.\nExample: -s /dev/sdc\n"
-	"You must specify board chip.\nExample: -b sama5d3\n")
+	"You must specify build target.\nExample: -b sama5d3\n")
                
 HELP()
 {
@@ -122,6 +122,14 @@ do
                     SYS_NAME=$SYSTEM_IMG-$BOARD_ID-$ANDROID_VERSION.img
                     DATA_NAME=$USERDATA_IMG-$BOARD_ID-$ANDROID_VERSION.img
 					;;
+
+                "sama5d3isi" )
+                    PRODUCT_DEVICE=$1
+                    BOARD_ID=SAMA5D3ISI
+                    SYS_NAME=$SYSTEM_IMG-$BOARD_ID-$ANDROID_VERSION.img
+                    DATA_NAME=$USERDATA_IMG-$BOARD_ID-$ANDROID_VERSION.img
+                    ;;
+
                 "sam9x5" )
                     PRODUCT_DEVICE=$1
                     BOARD_ID=SAM9X5
@@ -173,7 +181,7 @@ check_cmd "cd .."
 check_cmd "cp -a $ANDROID_PATCH/out/target/product/$PRODUCT_DEVICE/data/* ./data/"
 check_cmd "chmod 0777 -R ./data"
 
-if [ $BOARD_ID = "SAM9X5" ] || [ $BOARD_ID = "SAMA5D3" ]; then
+if [ $BOARD_ID = "SAM9X5" ] || [ $BOARD_ID = "SAMA5D3" ] || [ $BOARD_ID = "SAMA5D3ISI" ]; then
 	check_cmd "mkfs.ubifs -x lzo -m 2KiB -e 124KiB -c 1000 -o system_ubifs.img -d system/"
 	check_cmd "mkfs.ubifs -m 2KiB -e 124KiB -c 984 -o userdata_ubifs.img -d  data/"
 	check_cmd "ubinize -o ../$SYS_NAME -m 2KiB -p 128KiB -s 2048 ../system_ubi.cfg"

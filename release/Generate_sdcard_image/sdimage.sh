@@ -12,16 +12,16 @@ ERRLOGFILE=make_android_sdcard.log
 SD_USERSPACE=64M
 SD_STORAGE=1000M
 FORCE_REMOVE=false
-HELP_MESSAGE=("mksd_image -b board_chip -s /dev/sdxx [-u uImage_dir] [-d xxxM] --force\n
-	-b Specify the board chip. We now support sam9g45,sam9m10,sam9x5,sama5d3\n
+HELP_MESSAGE=("mksd_image -b build_target -s /dev/sdxx [-u uImage_dir] [-d xxxM] --force\n
+	-b Specify the build target. We now support sam9g45,sam9m10,sam9x5,sama5d3,sama5d3isi\n
 	-s Specify the sdcard node. Like /dev/sdc. You should plugin in the sdcard first\n
 	-u Specify the dir of the uImage if you want update kernel image. It is not a must\n
 	-d Specify the userspace size on sd card.It is not a must, default is 1000M\n
 	-h Print help message\n
 	--force Force remove files without warning. This maybe dangerous.\n"
-	"We only support the following boards: \nsam9g45 | sam9m10 | sam9x5 | sama5d3\n"
+	"We only support the following build targets: \nsam9g45 | sam9m10 | sam9x5 | sama5d3 | sama5d3isi\n"
 	"You must specify sdcard device node\nExample: -s /dev/sdc\n"
-	"You must specify board chip\nExample: -b sam9m10\n"
+	"You must specify build target\nExample: -b sam9m10\n"
 	"We could not find the sdcard device which you specify\n")
                
 WARNING_MESSAGE=("We could not find uImage,please check the uImage dir!\nIf continue,we will not update uImage\n
@@ -71,7 +71,7 @@ Display()
 {
 	echo "=============================="
 	echo "Sdcard:$SDCARD_DEVICE"
-	echo "Board chip:$PRODUCT_DEVICE"
+	echo "Build target:$PRODUCT_DEVICE"
 	if [ -e "$UIMAGE_DIR" ];then
 		echo "uImage will be updated with $UIMAGE_DIR"
 	fi
@@ -201,6 +201,11 @@ do
 				"sama5d3" )
 					PRODUCT_DEVICE=$1
 					BOARD_ID=SAMA5D3
+					SD_IMAGE_NAME=$BOARD_ID-$ANDROID_VERSION-$RELEASE_VERSION.img
+				;;
+				"sama5d3isi" )
+					PRODUCT_DEVICE=$1
+					BOARD_ID=SAMA5D3ISI
 					SD_IMAGE_NAME=$BOARD_ID-$ANDROID_VERSION-$RELEASE_VERSION.img
 				;;
 				* )
