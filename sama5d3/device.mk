@@ -18,6 +18,9 @@ $(call inherit-product, device/atmel/common/config/Android_Copy.mk)
 # Atmel boot logo
 $(call inherit-product, device/atmel/common/bootlogo/Android_Copy.mk)
 
+#Enabling Ring Tones
+$(call inherit-product, frameworks/base/data/sounds/OriginalAudio.mk)
+
 LOCAL_PATH := device/atmel/sama5d3
 
 PRODUCT_COPY_FILES += \
