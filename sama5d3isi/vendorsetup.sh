@@ -32,3 +32,7 @@ function mksd_image()
         sudo $(gettop)/device/atmel/release/Generate_sdcard_image/sdimage.sh $*
 }
 
+function mkext4_image()
+{
+        sudo $(gettop)/device/atmel/release/Generate_sdcard_image/ext4image.sh $*
+}
