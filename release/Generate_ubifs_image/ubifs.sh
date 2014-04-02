@@ -8,7 +8,9 @@ ANDROID_VERSION=ANDROID-4.2.2_r1.1
 SYSTEM_IMG=system_ubifs
 USERDATA_IMG=userdata_ubifs
 CACHE_IMG=cache_ubifs
-ANDROID_PATCH=$PWD
+ANDROID_PATH=$PWD
+ATMEL_RELEASE=$ANDROID_PATH/device/atmel/release
+ANDROID_PRODUCT=$ANDROID_PATH/out/target/product
 ERRLOGFILE=make_android_ubifs.log
 
 HELP_MESSAGE=("mkubi_image -b build_target\n
@@ -178,15 +180,15 @@ fi
 Display;
 echo "Generate android ubifs file, please wait for about 2-3 minutes ..."
 redirect_stdout_stderr;
-check_cmd "cd $ANDROID_PATCH/device/atmel/release/Generate_ubifs_image/"
+check_cmd "cd $ATMEL_RELEASE/Generate_ubifs_image/"
 rm_root;
 rm_ubifs;
-check_cmd "cp -a $ANDROID_PATCH/out/target/product/$PRODUCT_DEVICE/root ./"
+check_cmd "cp -a $ANDROID_PRODUCT/$PRODUCT_DEVICE/root ./"
 check_cmd "cd ./root/system/"
-check_cmd "cp -a $ANDROID_PATCH/out/target/product/$PRODUCT_DEVICE/system/* ./"
+check_cmd "cp -a $ANDROID_PRODUCT/$PRODUCT_DEVICE/system/* ./"
 check_cmd "cd .."
 check_cmd "mkdir ./cache/"
-check_cmd "cp -a $ANDROID_PATCH/out/target/product/$PRODUCT_DEVICE/data/* ./data/"
+check_cmd "cp -a $ANDROID_PRODUCT/$PRODUCT_DEVICE/data/* ./data/"
 check_cmd "chmod 0777 -R ./data"
 
 if [ $BOARD_ID = "SAM9X5" ] || [ $BOARD_ID = "SAMA5D3" ] || [ $BOARD_ID = "SAMA5D3ISI" ]; then
@@ -203,10 +205,10 @@ elif [ $BOARD_ID = "SAM9M10" ] || [ $BOARD_ID = "SAM9G45" ] ; then
 	check_cmd "ubinize -o ../$SYS_NAME -m 2KiB -p 128KiB -s 512 ../system_ubi.cfg"
 	check_cmd "ubinize -o  ../$DATA_NAME -m 2KiB -p 128KiB -s 512 ../userdata_ubi.cfg"
 fi
-check_cmd "cp ../$SYS_NAME $ANDROID_PATCH/"
-check_cmd "cp ../$DATA_NAME $ANDROID_PATCH/"
-check_cmd "cp ../$CACHE_NAME $ANDROID_PATCH/"
-check_cmd "cd $ANDROID_PATCH/device/atmel/release/Generate_ubifs_image/"
+check_cmd "cp ../$SYS_NAME $ANDROID_PATH/"
+check_cmd "cp ../$DATA_NAME $ANDROID_PATH/"
+check_cmd "cp ../$CACHE_NAME $ANDROID_PATH/"
+check_cmd "cd $ATMEL_RELEASE/Generate_ubifs_image/"
 rm_root;
 rm_ubifs;
 success_cmd;

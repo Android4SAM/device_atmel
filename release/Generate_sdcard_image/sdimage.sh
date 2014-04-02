@@ -7,7 +7,9 @@
 
 RELEASE_VERSION=ver1.1
 ANDROID_VERSION=ANDROID-4.2.2_r1.1
-ANDROID_PATCH=$PWD
+ANDROID_PATH=$PWD
+ATMEL_RELEASE=$ANDROID_PATH/device/atmel/release
+ANDROID_PRODUCT=$ANDROID_PATH/out/target/product
 ERRLOGFILE=make_android_sdcard.log
 SD_USERSPACE=64M
 SD_STORAGE=1000M
@@ -260,7 +262,7 @@ Display;
 echo "Gnerate android SD Image file,Please wait for about 2-3 minute..."
 redirect_stdout_stderr;
 
-check_cmd "cd $ANDROID_PATCH/device/atmel/release/Generate_sdcard_image/"
+check_cmd "cd $ATMEL_RELEASE/Generate_sdcard_image/"
 rm_dir ./root >&6 
 
 check_cmd "dd if=/dev/zero of="$SDCARD_DEVICE" bs=512 count=1";
@@ -302,12 +304,12 @@ rm_dir boot >&6
 check_cmd "mkfs.ext4 "$SDCARD_DEVICE"2"
 check_cmd "mkdir root"
 check_cmd "mount "$SDCARD_DEVICE"2 root"
-check_cmd "cp -a $ANDROID_PATCH/out/target/product/$PRODUCT_DEVICE/root/* ./root"
+check_cmd "cp -a $ANDROID_PRODUCT/$PRODUCT_DEVICE/root/* ./root"
 check_cmd "cd ./root/system/"
-check_cmd "cp -a $ANDROID_PATCH/out/target/product/$PRODUCT_DEVICE/system/* ./"
+check_cmd "cp -a $ANDROID_PRODUCT/$PRODUCT_DEVICE/system/* ./"
 check_cmd "cp ./initlogo.rle ../"
 check_cmd "cd .."
-check_cmd "cp -a $ANDROID_PATCH/out/target/product/$PRODUCT_DEVICE/data/* ./data/"
+check_cmd "cp -a $ANDROID_PRODUCT/$PRODUCT_DEVICE/data/* ./data/"
 check_cmd "chmod 0777 -R ./data"
 check_cmd "cd .."
 check_cmd "cp boot_$PRODUCT_DEVICE/vold.fstab ./root/system/etc/vold.fstab"
@@ -315,4 +317,5 @@ check_cmd "cp boot_$PRODUCT_DEVICE/init.rc ./root/init.rc"
 check_cmd "sync"
 check_cmd "sudo umount "$SDCARD_DEVICE"2"
 check_cmd "mkfs.msdos -F 32 "$SDCARD_DEVICE"3"
+rm_dir ./root >&6
 success_cmd;
