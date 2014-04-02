@@ -36,3 +36,8 @@ function mkext4_image()
 {
         sudo $(gettop)/device/atmel/release/Generate_sdcard_image/ext4image.sh $*
 }
+
+function mk_updatepackage()
+{
+	$(gettop)/device/atmel/release/Generate_update_package/update.sh $*
+}

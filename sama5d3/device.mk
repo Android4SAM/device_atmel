@@ -22,8 +22,10 @@ $(call inherit-product, device/atmel/common/bootlogo/Android_Copy.mk)
 $(call inherit-product, frameworks/base/data/sounds/OriginalAudio.mk)
 
 LOCAL_PATH := device/atmel/sama5d3
+LOCAL_KERNEL := device/atmel/sama5d3/kernel
 
 PRODUCT_COPY_FILES += \
+        $(LOCAL_KERNEL):kernel \
         $(LOCAL_PATH)/init.rc:root/init.rc \
         $(LOCAL_PATH)/init.sama5d3x-ek.rc:root/init.sama5d3x-ek.rc \
         $(LOCAL_PATH)/init.sama5d3x-pda.rc:root/init.sama5d3x-pda.rc \
