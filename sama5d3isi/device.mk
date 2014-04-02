@@ -24,6 +24,7 @@ $(call inherit-product, frameworks/base/data/sounds/OriginalAudio.mk)
 LOCAL_PATH := device/atmel/sama5d3isi
 
 PRODUCT_COPY_FILES += \
+        device/atmel/sama5d3/kernel:kernel \
         device/atmel/sama5d3/init.rc:root/init.rc \
         $(LOCAL_PATH)/init.sama5d3x-ek.rc:root/init.sama5d3x-ek.rc \
         device/atmel/sama5d3/init.sama5d3x-pda.rc:root/init.sama5d3x-pda.rc \
