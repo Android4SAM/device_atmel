@@ -3,7 +3,12 @@
 # update.sh - Generate the android update package.
 #
 ANDROID_VERSION=ANDROID-4.2.2_r1.1
-ANDROID_PATCH=$PWD
+ANDROID_PATH=$PWD
+ATMEL_RELEASE=$ANDROID_PATH/device/atmel/release
+ANDROID_PRODUCT_OUT=$ANDROID_PATH/out/target/product/sama5d3
+META_INF=update/META-INF/com/google/android
+UPDATE_BINARY=update/META-INF/com/google/android/update-binary
+UPDATER_SCRIPT=update/META-INF/com/google/android/updater-script
 BOARD_ID=SAMA5D3
 UPDATE_PACKAGE_NAME=update-$BOARD_ID-$ANDROID_VERSION.zip
 
@@ -135,15 +140,15 @@ do
 	shift
 done
 
-echo "Gnerate android update package,Please wait for about 1-2 minute..."
+echo "Generate android update package, Please wait for about 2-3 minutes ..."
 redirect_stdout_stderr;
-check_cmd "cd $ANDROID_PATCH/device/atmel/release/Generate_update_package/"
+check_cmd "cd $ATMEL_RELEASE/Generate_update_package/"
 rm_update;
 rm_zip;
 check_cmd "mkdir update"
-check_cmd "mkdir -p ./update/META-INF/com/google/android/"
-echo -e "show_progress(0.8, 40);\n" > update/META-INF/com/google/android/updater-script
-check_cmd "cp $ANDROID_PATCH/out/target/product/sama5d3/system/bin/updater update/META-INF/com/google/android/update-binary"
+check_cmd "mkdir -p ./$META_INF/"
+echo -e "show_progress(0.8, 40);\n" > $UPDATER_SCRIPT
+check_cmd "cp $ANDROID_PRODUCT_OUT/system/bin/updater $UPDATE_BINARY"
 
 if [ ! -z $dtb_file_dir ];then
 	if [ -f $dtb_file_dir ];then
@@ -155,40 +160,40 @@ if [ ! -z $dtb_file_dir ];then
 			check_cmd "cp "$dtb_file_dir"/sama5d3*.dtb update/"
 		fi
 	fi
-	echo -e "ui_print(\"Updating dtb...\");" >> update/META-INF/com/google/android/updater-script
-	echo -e "package_extract_file(choose_dtb_file_auto(),\"/tmp/sama5d3xek.dtb\");" >> update/META-INF/com/google/android/updater-script
-	echo -e "write_raw_image(\"/tmp/sama5d3xek.dtb\", \"dtb\");" >> update/META-INF/com/google/android/updater-script
-	echo -e "delete(\"/tmp/sama5d3xek.dtb\");\n" >> update/META-INF/com/google/android/updater-script
+	echo -e "ui_print(\"Updating dtb...\");" >> $UPDATER_SCRIPT
+	echo -e "package_extract_file(choose_dtb_file_auto(),\"/tmp/sama5d3xek.dtb\");" >> $UPDATER_SCRIPT
+	echo -e "write_raw_image(\"/tmp/sama5d3xek.dtb\", \"dtb\");" >> $UPDATER_SCRIPT
+	echo -e "delete(\"/tmp/sama5d3xek.dtb\");\n" >> $UPDATER_SCRIPT
 fi
 
 if [ ! -z $kernel_image_dir ]; then
 	if [ -f $kernel_image_dir ];then
 		check_cmd "cp $kernel_image_dir update/"
-		echo -e "ui_print(\"Updating boot...\");" >> update/META-INF/com/google/android/updater-script
-		echo -e "package_extract_file(\"uImage\",\"/tmp/uImage\");" >> update/META-INF/com/google/android/updater-script
-		echo -e "write_raw_image(\"/tmp/uImage\", \"boot\");" >> update/META-INF/com/google/android/updater-script
-		echo -e "delete(\"/tmp/uImage\");\n" >> update/META-INF/com/google/android/updater-script
+		echo -e "ui_print(\"Updating boot...\");" >> $UPDATER_SCRIPT
+		echo -e "package_extract_file(\"uImage\",\"/tmp/uImage\");" >> $UPDATER_SCRIPT
+		echo -e "write_raw_image(\"/tmp/uImage\", \"boot\");" >> $UPDATER_SCRIPT
+		echo -e "delete(\"/tmp/uImage\");\n" >> $UPDATER_SCRIPT
 	fi
 fi
 
 if [ $Update_system_image = "true" ];then
-	check_cmd "cd $ANDROID_PATCH"
+	check_cmd "cd $ANDROID_PATH"
 	source build/envsetup.sh
 	check_cmd "mkubi_image -b sama5d3"
 	p=`ls system_ubifs*.img`
-	check_cmd "cp $p $ANDROID_PATCH/device/atmel/release/Generate_update_package/update/"
-	check_cmd "cd $ANDROID_PATCH/device/atmel/release/Generate_update_package/"
-	echo -e "ui_print(\"Updating system...\");" >> update/META-INF/com/google/android/updater-script
-	echo -e "package_extract_file(\"$p\",\"/tmp/$p\");" >> update/META-INF/com/google/android/updater-script
-	echo -e "write_raw_image(\"/tmp/$p\", \"system\");" >> update/META-INF/com/google/android/updater-script
-	echo -e "delete(\"/tmp/$p\");\n" >> update/META-INF/com/google/android/updater-script
+	check_cmd "cp $p $ATMEL_RELEASE/Generate_update_package/update/"
+	check_cmd "cd $ATMEL_RELEASE/Generate_update_package/"
+	echo -e "ui_print(\"Updating system...\");" >> $UPDATER_SCRIPT
+	echo -e "package_extract_file(\"$p\",\"/tmp/$p\");" >> $UPDATER_SCRIPT
+	echo -e "write_raw_image(\"/tmp/$p\", \"system\");" >> $UPDATER_SCRIPT
+	echo -e "delete(\"/tmp/$p\");\n" >> $UPDATER_SCRIPT
 fi
 
-echo -e "show_progress(0.1, 0);\n" >> update/META-INF/com/google/android/updater-script
+echo -e "show_progress(0.1, 0);\n" >> $UPDATER_SCRIPT
 check_cmd "cd ./update"
 check_cmd "zip ../$UPDATE_PACKAGE_NAME -r ./"
 check_cmd "cd .."
-check_cmd "cp $UPDATE_PACKAGE_NAME $ANDROID_PATCH/"
+check_cmd "cp $UPDATE_PACKAGE_NAME $ANDROID_PATH/"
 rm_update;
 rm_zip;
 success_cmd;
