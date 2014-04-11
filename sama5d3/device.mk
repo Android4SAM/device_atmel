@@ -63,5 +63,6 @@ PRODUCT_COPY_FILES += \
         frameworks/native/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
         frameworks/native/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml \
 	frameworks/native/data/etc/android.hardware.touchscreen.multitouch.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.xml
-PRODUCT_PROPERTY_OVERRIDES := \
-    wifi.interface=wlan0
+PRODUCT_PROPERTY_OVERRIDES += ro.config.low_ram=true \
+                              wifi.interface=wlan0   \
+                              dalvik.vm.jit.codecachesize=0
