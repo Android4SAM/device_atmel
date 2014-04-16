@@ -11,7 +11,7 @@ PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/gpio-keys.kl:system/usr/keylayout/gpio-keys.kl \
 	$(LOCAL_PATH)/AT42QT1070_QTouch_Sensor.kl:system/usr/keylayout/AT42QT1070_QTouch_Sensor.kl \
 	$(LOCAL_PATH)/egl.cfg:system/lib/egl/egl.cfg \
-	$(LOCAL_PATH)/atmel_touch_screen_controller.idc:system/usr/idc/atmel_touch_screen_controller.idc \
+	$(LOCAL_PATH)/at91_adc.idc:system/usr/idc/at91_adc.idc \
         $(LOCAL_PATH)/Atmel_maXTouch_Touchscreen.idc:system/usr/idc/Atmel_maXTouch_Touchscreen.idc     \
 	$(LOCAL_PATH)/media_profiles.xml:system/etc/media_profiles.xml \
 	$(LOCAL_PATH)/media_codecs.xml:system/etc/media_codecs.xml \
