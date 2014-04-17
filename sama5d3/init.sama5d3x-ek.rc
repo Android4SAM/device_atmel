@@ -48,15 +48,15 @@ on boot
 # Define for Backlight,let Android have the permission to access linux sysfs of backlight
    chmod 0777 /sys/class/backlight/backlight/brightness
    chown system system /sys/class/backlight/backlight/brightness
- # Make Calibrate App have the permisson to access linux kernel parameters
-   chown system system /sys/module/atmel_tsadcc/parameters/calibrated
-   chown system system /sys/module/atmel_tsadcc/parameters/tx1
-   chown system system /sys/module/atmel_tsadcc/parameters/ty1
-   chown system system /sys/module/atmel_tsadcc/parameters/tz1
-   chown system system /sys/module/atmel_tsadcc/parameters/tx2
-   chown system system /sys/module/atmel_tsadcc/parameters/ty2
-   chown system system /sys/module/atmel_tsadcc/parameters/tz2
-   chown system system /sys/module/atmel_tsadcc/parameters/ts
+# Make Calibrate App have the permisson to access linux kernel parameters
+   chown system system /sys/module/at91_adc/parameters/calibrated
+   chown system system /sys/module/at91_adc/parameters/tx1
+   chown system system /sys/module/at91_adc/parameters/ty1
+   chown system system /sys/module/at91_adc/parameters/tz1
+   chown system system /sys/module/at91_adc/parameters/tx2
+   chown system system /sys/module/at91_adc/parameters/ty2
+   chown system system /sys/module/at91_adc/parameters/tz2
+   chown system system /sys/module/at91_adc/parameters/ts
 
 # add for bluetooth
   insmod /system/lib/modules/rtk_btusb.ko
