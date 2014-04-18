@@ -1,0 +1,2 @@
+# mount point	fstype		device
+/sdcard		vfat		/dev/block/mmcblk1p1	/dev/block/mmcblk1 

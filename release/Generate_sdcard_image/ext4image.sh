@@ -11,8 +11,8 @@ ANDROID_PATH=$PWD
 EXT4_MNT_DIR=/tmp/mnt_dir
 ATMEL_SDCARD_TOOL=$ANDROID_PATH/device/atmel/release/Generate_sdcard_image
 ERRLOGFILE=$ANDROID_PATH/make_android_ext4_image.log
-ROOTFS_IMAGE_NAME=android_ext4_image_4_fastboot.img
-ROOTFS_IMAGE_SIZE=384
+ROOTFS_IMAGE_NAME=android_ext4_image.img
+ROOTFS_IMAGE_SIZE=320
 
 HELP_MESSAGE=("mkext4_image -b build_target\n
     -b Specify the build target. We now support sama5d3 | sama5d3isi.

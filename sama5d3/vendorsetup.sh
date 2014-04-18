@@ -41,3 +41,7 @@ function mk_updatepackage()
 {
 	$(gettop)/device/atmel/release/Generate_update_package/update.sh $*
 }
+function mk_updatepackage4sdcard()
+{
+	$(gettop)/device/atmel/release/Generate_sdcard_image/update4sdcard.sh $*
+}
