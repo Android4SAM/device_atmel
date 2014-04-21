@@ -5,7 +5,7 @@ LOCAL_PATH := device/atmel/common/config
 # system configuration files
 #
 PRODUCT_COPY_FILES += \
-	$(LOCAL_PATH)/vold.fstab:system/etc/vold.fstab \
+	$(LOCAL_PATH)/fstab.sama5d3x-ek:root/fstab.sama5d3x-ek \
 	$(LOCAL_PATH)/asound.conf:system/etc/asound.conf \
 	$(LOCAL_PATH)/android.conf:system/etc/android.conf \
 	$(LOCAL_PATH)/gpio-keys.kl:system/usr/keylayout/gpio-keys.kl \
