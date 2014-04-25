@@ -32,6 +32,8 @@ on init
     mkdir /storage/emulated 0555 root root
     mkdir /storage/sdcard1 0000 system system
     mkdir /mnt/media_rw/sdcard1 0700 media_rw media_rw
+    mkdir /storage/udisk0 0000 system system
+    mkdir /mnt/media_rw/udisk0 0700 media_rw media_rw
 
     export EXTERNAL_STORAGE /storage/emulated/legacy
     export EMULATED_STORAGE_SOURCE /mnt/shell/emulated
@@ -74,6 +76,10 @@ service sdcard /system/bin/sdcard /data/media /mnt/shell/emulated 1023 1023
     class main
     oneshot
 service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -w 1023 -d /mnt/media_rw/sdcard1 /storage/sdcard1
+    class late_start
+    disabled
+
+service fuse_udisk0 /system/bin/sdcard -u 1023 -g 1023 -w 1023 -d /mnt/media_rw/udisk0 /storage/udisk0
     class late_start
     disabled
 
