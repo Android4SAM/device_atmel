@@ -29,7 +29,7 @@ PRODUCT_PACKAGES := \
     Email \
     Exchange2 \
     FusedLocation \
-    Gallery2 \
+    Gallery \
     InputDevices \
     Keyguard \
     LatinIME \
