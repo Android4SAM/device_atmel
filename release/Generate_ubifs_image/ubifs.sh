@@ -131,6 +131,14 @@ do
                     CACHE_NAME=$CACHE_IMG-$BOARD_ID-$ANDROID_VERSION.img
 					;;
 
+                "sama5d4" )
+                    PRODUCT_DEVICE=$1
+                    BOARD_ID=SAMA5D4
+                    SYS_NAME=$SYSTEM_IMG-$BOARD_ID-$ANDROID_VERSION.img
+                    DATA_NAME=$USERDATA_IMG-$BOARD_ID-$ANDROID_VERSION.img
+                    CACHE_NAME=$CACHE_IMG-$BOARD_ID-$ANDROID_VERSION.img
+                                        ;;
+
                 "sama5d3isi" )
                     PRODUCT_DEVICE=$1
                     BOARD_ID=SAMA5D3ISI
@@ -191,8 +199,8 @@ check_cmd "mkdir ./cache/"
 check_cmd "cp -ru $ANDROID_PRODUCT/$PRODUCT_DEVICE/data ./data"
 check_cmd "chmod 0777 -R ./data"
 
-if [ $BOARD_ID = "SAM9X5" ] || [ $BOARD_ID = "SAMA5D3" ] || [ $BOARD_ID = "SAMA5D3ISI" ]; then
-	check_cmd "mkfs.ubifs -m 2KiB -e 124KiB -c 1045 -o system_ubifs.img -d system/"
+if [ $BOARD_ID = "SAM9X5" ] || [ $BOARD_ID = "SAMA5D3" ] || [ $BOARD_ID = "SAMA5D3ISI" ] || [ $BOARD_ID = "SAMA5D4" ]; then
+	check_cmd "mkfs.ubifs -m 2KiB -e 124KiB -c 1049 -o system_ubifs.img -d system/"
 	check_cmd "mkfs.ubifs -m 2KiB -e 124KiB -c 984 -o userdata_ubifs.img -d  data/"
 	check_cmd "mkfs.ubifs -m 2KiB -e 124KiB -c 1230 -o cache_ubifs.img -d  cache/"
 	check_cmd "ubinize -o ../$SYS_NAME -m 2KiB -p 128KiB -s 2048 ../system_ubi.cfg"
