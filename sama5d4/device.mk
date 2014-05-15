@@ -25,11 +25,11 @@ LOCAL_PATH := device/atmel/sama5d4
 
 PRODUCT_COPY_FILES += \
         $(LOCAL_PATH)/init.rc:root/init.rc \
-        $(LOCAL_PATH)/init.sama5d3x-ek.rc:root/init.sama5d3x-ek.rc \
-        $(LOCAL_PATH)/init.sama5d3x-pda.rc:root/init.sama5d3x-pda.rc \
-        $(LOCAL_PATH)/ueventd.sama5d3x-ek.rc:root/ueventd.sama5d3x-ek.rc \
-        $(LOCAL_PATH)/ueventd.sama5d3x-pda.rc:root/ueventd.sama5d3x-pda.rc \
-        $(LOCAL_PATH)/init.sama5d3x-ek.usb.rc:root/init.sama5d3x-ek.usb.rc
+        $(LOCAL_PATH)/init.sama5-ek.rc:root/init.sama5-ek.rc \
+        $(LOCAL_PATH)/init.sama5-pda.rc:root/init.sama5-pda.rc \
+        $(LOCAL_PATH)/ueventd.sama5-ek.rc:root/ueventd.sama5-ek.rc \
+        $(LOCAL_PATH)/ueventd.sama5-pda.rc:root/ueventd.sama5-pda.rc \
+        $(LOCAL_PATH)/init.sama5-ek.usb.rc:root/init.sama5-ek.usb.rc
 
 PRODUCT_PACKAGES += \
         Calibrate \

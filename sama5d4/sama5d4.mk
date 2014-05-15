@@ -13,7 +13,7 @@
 # limitations under the License.
 
 $(call inherit-product, device/atmel/common/generic_no_telephony.mk)
-$(call inherit-product, device/atmel/sama5d3/device.mk)
+$(call inherit-product, device/atmel/sama5d4/device.mk)
 
 PRODUCT_NAME := sama5d4
 PRODUCT_DEVICE := sama5d4

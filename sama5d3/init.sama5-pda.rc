@@ -1,7 +1,7 @@
-import init.sama5d3x-ek.usb.rc
+import init.${ro.hardware}.usb.rc
 
 on early-init
-   copy /system/initlogo.rle /initlogo.rle
+   copy /system/initlogo_pda.rle /initlogo.rle
 
 on post-fs-data
    mkdir /data/media 0770 media_rw media_rw
@@ -18,63 +18,57 @@ on post-fs-data
    
 on init
 # The DPI settings for our display (default 160)
-   setprop ro.sf.lcd_density 213
+   setprop ro.sf.lcd_density 120
 
 # Enable MTP and ADB
     setprop persist.sys.usb.config mtp,adb
 
 # Change the vm heap size (default 16m)
    setprop dalvik.vm.heapsize 32m
+   
+   mkdir /mnt/shell/emulated 0700 shell shell   
+   mkdir /storage/emulated 0555 root root    
+   mkdir /storage/sdcard1 0000 system system
+   mkdir /storage/udisk0 0000 system system
+   mkdir /mnt/media_rw/sdcard1 0700 media_rw media_rw    
+   mkdir /mnt/media_rw/udisk0 0700 media_rw media_rw
 
-    mkdir /mnt/shell/emulated 0700 shell shell
-    mkdir /storage/emulated 0555 root root
-    mkdir /storage/sdcard1 0000 system system
-    mkdir /mnt/media_rw/sdcard1 0700 media_rw media_rw
-    mkdir /storage/udisk0 0000 system system
-    mkdir /mnt/media_rw/udisk0 0700 media_rw media_rw
+   export EXTERNAL_STORAGE /storage/emulated/legacy    
+   export EMULATED_STORAGE_SOURCE /mnt/shell/emulated    
+   export EMULATED_STORAGE_TARGET /storage/emulated    
+   export SECONDARY_STORAGE /storage/sdcard1    
 
-    export EXTERNAL_STORAGE /storage/emulated/legacy
-    export EMULATED_STORAGE_SOURCE /mnt/shell/emulated
-    export EMULATED_STORAGE_TARGET /storage/emulated
-    export SECONDARY_STORAGE /storage/sdcard1
+# Support legacy paths    
+   symlink /storage/emulated/legacy /sdcard    
+   symlink /storage/emulated/legacy /mnt/sdcard    
+   symlink /storage/emulated/legacy /storage/sdcard0    
+   symlink /mnt/shell/emulated/0 /storage/emulated/legacy
 
-    # Support legacy paths
-    symlink /storage/emulated/legacy /sdcard
-    symlink /storage/emulated/legacy /mnt/sdcard
-    symlink /storage/emulated/legacy /storage/sdcard0
-    symlink /mnt/shell/emulated/0 /storage/emulated/legacy
-
-on fs
-   setprop ro.crypto.fuse_sdcard true
-   mount_all fstab.sama5d3x-ek   
+on fs   
+   #setprop ro.crypto.fuse_sdcard true   
+   mount_all fstab.${ro.hardware}
 
 on boot
 
 # Define for Backlight,let Android have the permission to access linux sysfs of backlight
    chmod 0777 /sys/class/backlight/backlight/brightness
    chown system system /sys/class/backlight/backlight/brightness
-# Make Calibrate App have the permisson to access linux kernel parameters
-   chown system system /sys/module/at91_adc/parameters/calibrated
-   chown system system /sys/module/at91_adc/parameters/tx1
-   chown system system /sys/module/at91_adc/parameters/ty1
-   chown system system /sys/module/at91_adc/parameters/tz1
-   chown system system /sys/module/at91_adc/parameters/tx2
-   chown system system /sys/module/at91_adc/parameters/ty2
-   chown system system /sys/module/at91_adc/parameters/tz2
-   chown system system /sys/module/at91_adc/parameters/ts
 
-# add for bluetooth
+# Add for bluetooth
   insmod /system/lib/modules/rtk_btusb.ko
   chmod 0660 /dev/rtk_btusb
   chown bluetooth net_bt_stack /dev/rtk_btusb
 
+# Disable touch calibration,PDA dm touch do not need calibration.
+   setprop dev.calibrate.parameters 0
 
 # virtual sdcard daemon running as media_rw (1023)
 service sdcard /system/bin/sdcard /data/media /mnt/shell/emulated 1023 1023
     class main
     oneshot
-service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -w 1023 -d /mnt/media_rw/sdcard1 /storage/sdcard1
-    class late_start
+
+service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -w 1023 -d /mnt/media_rw/sdcard1 /storage/sdcard1    
+    class late_start    
     disabled
 
 service fuse_udisk0 /system/bin/sdcard -u 1023 -g 1023 -w 1023 -d /mnt/media_rw/udisk0 /storage/udisk0

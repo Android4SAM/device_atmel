@@ -1,4 +1,4 @@
-import init.sama5d3x-ek.usb.rc
+import init.${ro.hardware}.usb.rc
 
 on early-init
    copy /system/initlogo_pda.rle /initlogo.rle
@@ -46,7 +46,7 @@ on init
 
 on fs   
    #setprop ro.crypto.fuse_sdcard true   
-   mount_all fstab.sama5d3x-pda
+   mount_all fstab.${ro.hardware}
 
 on boot
 
