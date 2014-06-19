@@ -38,7 +38,6 @@ PRODUCT_PACKAGES += \
         AtmelLogo \
         Ethernet \
         PinyinIME \
-        Mms \
         LegacyCamera \
         libjni_pinyinime \
         libdrmframework_jni \

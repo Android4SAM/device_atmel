@@ -41,7 +41,6 @@ PRODUCT_PACKAGES += \
         AtmelLogo \
         Ethernet \
         PinyinIME \
-        Mms \
         libjni_pinyinime \
         libdrmframework_jni \
         com.android.inputmethod.pinyin.lib \
