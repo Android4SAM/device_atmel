@@ -75,8 +75,31 @@ Only the three quirks included above are recognized at this point:
 
 -->
 
+<!-- NOTE! This file is an example. Remember to use correct MediaCodec names
+    and types based on your product configuration
+    Hantro video codec names:
+    G1 decoder:     OMX.hantro.G1.video.decoder
+    H1 encoder:     OMX.hantro.H1.video.encoder
+    8290 encoder:   OMX.hantro.8290.video.encoder
+    8270 encoder:   OMX.hantro.8270.video.encoder
+    7280 encoder:   OMX.hantro.7280.video.encoder
+
+    Names and roles are defined in version.h and
+    encoder_version.h
+-->
+
 <MediaCodecs>
     <Decoders>
+        <MediaCodec name="OMX.hantro.G1.video.decoder" >
+            <Type name="video/mp4v-es" />
+            <Type name="video/3gpp" />
+            <Type name="video/avc" />
+            <Type name="video/x-vnd.on2.vp8" />
+            <Quirk name="requires-allocate-on-output-ports" />
+            <Quirk name="requires-allocate-on-input-ports" />
+        </MediaCodec>
+        <MediaCodec name="OMX.hantro.G1.image.decoder" type="image/jpeg" />
+
         <MediaCodec name="OMX.google.mp3.decoder" type="audio/mpeg" />
         <MediaCodec name="OMX.google.amrnb.decoder" type="audio/3gpp" />
         <MediaCodec name="OMX.google.amrwb.decoder" type="audio/amr-wb" />
@@ -92,6 +115,12 @@ Only the three quirks included above are recognized at this point:
     </Decoders>
 
     <Encoders>
+        <MediaCodec name="OMX.hantro.H1.video.encoder" >
+            <Type name="video/avc" />
+            <Type name="video/x-vnd.on2.vp8" />
+        </MediaCodec>
+        <MediaCodec name="OMX.hantro.H1.image.encoder" type="image/jpeg" />
+
         <MediaCodec name="OMX.google.aac.encoder" type="audio/mp4a-latm" />
         <MediaCodec name="OMX.google.amrnb.encoder" type="audio/3gpp" />
         <MediaCodec name="OMX.google.amrwb.encoder" type="audio/amr-wb" />

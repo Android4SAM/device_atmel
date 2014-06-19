@@ -1,3 +1,5 @@
 
 /dev/video*               0660   system     camera
 /dev/rtk_btusb		  0660   bluetooth  bluetooth
+/dev/vdec   		  0660   media  media
+/dev/memalloc		  0660   system  media
