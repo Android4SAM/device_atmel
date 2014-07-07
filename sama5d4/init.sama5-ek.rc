@@ -1,4 +1,4 @@
-import init.${ro.hardware}.usb.rc
+import init.sama5d4.usb.rc
 
 on early-init
    copy /system/initlogo.rle /initlogo.rle

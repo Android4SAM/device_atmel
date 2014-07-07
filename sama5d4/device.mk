@@ -29,7 +29,7 @@ PRODUCT_COPY_FILES += \
         $(LOCAL_PATH)/init.sama5-pda.rc:root/init.sama5-pda.rc \
         $(LOCAL_PATH)/ueventd.sama5-ek.rc:root/ueventd.sama5-ek.rc \
         $(LOCAL_PATH)/ueventd.sama5-pda.rc:root/ueventd.sama5-pda.rc \
-        $(LOCAL_PATH)/init.sama5-ek.usb.rc:root/init.sama5-ek.usb.rc
+        $(LOCAL_PATH)/init.sama5d4.usb.rc:root/init.sama5d4.usb.rc
 
 PRODUCT_COPY_FILES += \
 		$(LOCAL_PATH)/libstagefrighthw.so:system/lib/libstagefrighthw.so \
