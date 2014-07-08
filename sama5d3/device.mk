@@ -29,6 +29,7 @@ PRODUCT_COPY_FILES += \
         $(LOCAL_PATH)/init.rc:root/init.rc \
         $(LOCAL_PATH)/init.sama5-ek.rc:root/init.sama5-ek.rc \
         $(LOCAL_PATH)/init.sama5-pda.rc:root/init.sama5-pda.rc \
+	$(LOCAL_PATH)/mixer_paths.xml:system/etc/mixer_paths.xml \
         $(LOCAL_PATH)/ueventd.sama5-ek.rc:root/ueventd.sama5-ek.rc \
         $(LOCAL_PATH)/ueventd.sama5-pda.rc:root/ueventd.sama5-pda.rc \
         $(LOCAL_PATH)/init.sama5d3.usb.rc:root/init.sama5d3.usb.rc
