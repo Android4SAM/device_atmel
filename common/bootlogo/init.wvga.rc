@@ -1,0 +1,3 @@
+
+on early-init
+   copy /system/wvga.rle /initlogo.rle

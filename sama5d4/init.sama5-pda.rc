@@ -1,8 +1,5 @@
 import init.sama5d4.usb.rc
 
-on early-init
-   copy /system/initlogo_pda.rle /initlogo.rle
-
 on post-fs-data
    mkdir /data/media 0770 media_rw media_rw
 
