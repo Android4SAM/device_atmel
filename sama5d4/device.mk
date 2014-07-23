@@ -38,7 +38,6 @@ PRODUCT_COPY_FILES += \
 		$(LOCAL_PATH)/libOMX.hantro.G1.video.decoder.so:system/lib/libOMX.hantro.G1.video.decoder.so
 
 PRODUCT_PACKAGES += \
-        Calibrate \
         AtmelLogo \
         Ethernet \
         PinyinIME \
