@@ -1,2 +1,6 @@
 on early-init
    copy /system/hvga.rle /initlogo.rle
+
+on init
+# The DPI settings for our display (default 160)
+   setprop ro.sf.lcd_density 120

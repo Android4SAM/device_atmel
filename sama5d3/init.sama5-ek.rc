@@ -14,8 +14,6 @@ on post-fs-data
     mkdir /tmp 0777 system system
    
 on init
-# The DPI settings for our display (default 160)
-   setprop ro.sf.lcd_density 213
 
 # Enable MTP and ADB
     setprop persist.sys.usb.config mtp,adb
