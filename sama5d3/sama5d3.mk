@@ -21,7 +21,7 @@ PRODUCT_BRAND := Android
 PRODUCT_MODEL := Android for Atmel A5
 
 # S/W button enabled in resource
-DEVICE_PACKAGE_OVERLAYS := device/atmel/sama5d3/overlay
+DEVICE_PACKAGE_OVERLAYS := device/atmel/common/overlay
 PRODUCT_CHARACTERISTICS := default
 
 TARGET_BOOTLOADER_BOARD_NAME := sama5d3-ek
