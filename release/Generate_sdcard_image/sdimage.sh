@@ -6,7 +6,7 @@
 # Created. liuxin <liuxing@embedinfo.com>
 
 RELEASE_VERSION=ver1.1
-ANDROID_VERSION=ANDROID-4.2.2_r1.1
+ANDROID_VERSION=ANDROID-4.4.2_r2
 ANDROID_PATH=$PWD
 ATMEL_RELEASE=$ANDROID_PATH/device/atmel/release
 ANDROID_PRODUCT=$ANDROID_PATH/out/target/product
@@ -210,6 +210,11 @@ do
 					BOARD_ID=SAMA5D3ISI
 					SD_IMAGE_NAME=$BOARD_ID-$ANDROID_VERSION-$RELEASE_VERSION.img
 				;;
+                                "sama5d4" )
+                                        PRODUCT_DEVICE=$1
+                                        BOARD_ID=SAMA5D4
+                                        SD_IMAGE_NAME=$BOARD_ID-$ANDROID_VERSION-$RELEASE_VERSION.img
+                                ;;
 				* )
 					HELP 1;
 				;;
@@ -293,7 +298,6 @@ check_cmd "mkfs.msdos -F 32 "$SDCARD_DEVICE"1"
 check_cmd "mkdir boot -p"
 check_cmd "mount -t vfat "$SDCARD_DEVICE"1 boot"
 check_cmd "cp boot_$PRODUCT_DEVICE/* boot/"
-check_cmd "rm boot/vold.fstab"
 check_cmd "rm boot/init.rc"
 if [ -e "$UIMAGE_DIR" ];then
 	check_cmd "cp $UIMAGE_DIR boot/UIMAGE"
@@ -302,20 +306,19 @@ check_cmd "sync"
 check_cmd "umount boot"
 rm_dir boot >&6
 check_cmd "mkfs.ext4 "$SDCARD_DEVICE"2"
+check_cmd "mkfs.ext4 "$SDCARD_DEVICE"3"
 check_cmd "mkdir root"
-check_cmd "mount "$SDCARD_DEVICE"2 root"
+check_cmd "mkdir system"
+check_cmd "mkdir data"
+check_cmd "mount "$SDCARD_DEVICE"2 system"
+check_cmd "mount "$SDCARD_DEVICE"3 data"
 check_cmd "cp -a $ANDROID_PRODUCT/$PRODUCT_DEVICE/root/* ./root"
-check_cmd "cd ./root/system/"
-check_cmd "cp -a $ANDROID_PRODUCT/$PRODUCT_DEVICE/system/* ./"
-check_cmd "cp ./initlogo.rle ../"
-check_cmd "cd .."
-check_cmd "cp -a $ANDROID_PRODUCT/$PRODUCT_DEVICE/data/* ./data/"
-check_cmd "chmod 0777 -R ./data"
-check_cmd "cd .."
-check_cmd "cp boot_$PRODUCT_DEVICE/vold.fstab ./root/system/etc/vold.fstab"
+check_cmd "cp -a $ANDROID_PATCH/out/target/product/$PRODUCT_DEVICE/system/* ./system"
+check_cmd "cp -ru $ANDROID_PATCH/out/target/product/$PRODUCT_DEVICE/data ./data"
 check_cmd "cp boot_$PRODUCT_DEVICE/init.rc ./root/init.rc"
 check_cmd "sync"
 check_cmd "sudo umount "$SDCARD_DEVICE"2"
-check_cmd "mkfs.msdos -F 32 "$SDCARD_DEVICE"3"
+check_cmd "sudo umount "$SDCARD_DEVICE"3"
+check_cmd "rm -rf system data"
 rm_dir ./root >&6
 success_cmd;
