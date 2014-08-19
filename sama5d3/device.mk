@@ -41,6 +41,7 @@ PRODUCT_PACKAGES += \
         Ethernet \
         PinyinIME \
         Mms \
+        LegacyCamera \
         libjni_pinyinime \
         libdrmframework_jni \
         com.android.inputmethod.pinyin.lib \
@@ -49,6 +50,7 @@ PRODUCT_PACKAGES += \
         audio.primary.$(TARGET_BOOTLOADER_BOARD_NAME) \
         hwcomposer.$(TARGET_BOOTLOADER_BOARD_NAME) \
         copybit.$(TARGET_BOOTLOADER_BOARD_NAME) \
+        camera.$(TARGET_BOOTLOADER_BOARD_NAME) \
         libGLES_ATMEL_SAM \
         PicoLangInstaller
 
