@@ -150,6 +150,7 @@ on fs
 #    mount ubifs ubi1_0 /data nosuid nodev
      mount ext4 /dev/block/mmcblk0p2 /system ro
      mount ext4 /dev/block/mmcblk0p3 /data nosuid nodev
+
 on post-fs
     # once everything is setup, no need to modify /
     mount rootfs rootfs / ro remount
@@ -509,7 +510,7 @@ service drm /system/bin/drmserver
 
 service media /system/bin/mediaserver
     class main
-    user media
+    user root
     group audio camera inet net_bt net_bt_admin net_bw_acct drmrpc mediadrm
     ioprio rt 4
 
