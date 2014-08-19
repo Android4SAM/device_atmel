@@ -28,9 +28,11 @@ PRODUCT_COPY_FILES += \
         $(LOCAL_KERNEL):kernel \
         $(LOCAL_PATH)/init.rc:root/init.rc \
         $(LOCAL_PATH)/init.sama5d3x-ek.rc:root/init.sama5d3x-ek.rc \
-        $(LOCAL_PATH)/init.sama5d3x-pda.rc:root/init.sama5d3x-pda.rc \
+        $(LOCAL_PATH)/init.sama5d3x-pda4.rc:root/init.sama5d3x-pda4.rc \
+        $(LOCAL_PATH)/init.sama5d3x-pda7.rc:root/init.sama5d3x-pda7.rc \
         $(LOCAL_PATH)/ueventd.sama5d3x-ek.rc:root/ueventd.sama5d3x-ek.rc \
-        $(LOCAL_PATH)/ueventd.sama5d3x-pda.rc:root/ueventd.sama5d3x-pda.rc \
+        $(LOCAL_PATH)/ueventd.sama5d3x-pda4.rc:root/ueventd.sama5d3x-pda4.rc \
+        $(LOCAL_PATH)/ueventd.sama5d3x-pda7.rc:root/ueventd.sama5d3x-pda7.rc \
         $(LOCAL_PATH)/init.sama5d3x-ek.usb.rc:root/init.sama5d3x-ek.usb.rc
 
 PRODUCT_PACKAGES += \

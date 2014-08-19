@@ -1,7 +1,7 @@
 import init.sama5d3x-ek.usb.rc
 
 on early-init
-   copy /system/initlogo_pda.rle /initlogo.rle
+   copy /system/initlogo_pda7.rle /initlogo.rle
 
 on post-fs-data
    mkdir /data/media 0770 media_rw media_rw
@@ -18,7 +18,7 @@ on post-fs-data
    
 on init
 # The DPI settings for our display (default 160)
-   setprop ro.sf.lcd_density 120
+   setprop ro.sf.lcd_density 200
 
 # Enable MTP and ADB
     setprop persist.sys.usb.config mtp,adb

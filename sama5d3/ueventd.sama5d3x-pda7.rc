@@ -1,0 +1,3 @@
+
+/dev/video*               0660   system     camera
+/dev/rtk_btusb		  0660   bluetooth  bluetooth
