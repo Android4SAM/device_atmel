@@ -1,5 +1,5 @@
 # make file for new hardware  from 
-PREBUILD_FIRMWARE := false
+PREBUILD_FIRMWARE := realtek
 LOCAL_PATH := device/atmel/common/config
 
 # system configuration files
