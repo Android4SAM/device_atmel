@@ -13,9 +13,11 @@ on post-fs-data
    mkdir /data/misc/dhcp 0770 dhcp dhcp
    chown dhcp dhcp /data/misc/dhcp
 
+on early-init
 # Define for camera
     mkdir /tmp 0777 system system
-   
+    mount tmpfs tmpfs  /tmp
+
 on init
 # The DPI settings for our display (default 160)
    setprop ro.sf.lcd_density 200
