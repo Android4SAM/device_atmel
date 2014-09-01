@@ -164,6 +164,8 @@ check_cmd "chmod 0777 -R $EXT4_MNT_DIR/data/"
 check_cmd "cp boot_$PRODUCT_DEVICE/vold.fstab $EXT4_MNT_DIR/system/etc/vold.fstab"
 check_cmd "cp boot_$PRODUCT_DEVICE/init.rc $EXT4_MNT_DIR/init.rc"
 
+check_cmd "sync"
+
 check_cmd "umount $EXT4_MNT_DIR"
 
 check_cmd "cp $ROOTFS_IMAGE_NAME $ANDROID_PATH/"
