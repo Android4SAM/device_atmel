@@ -7,7 +7,6 @@
 ANDROID_VERSION=ANDROID-4.4.2_r2
 SYSTEM_IMG=system_ubifs
 USERDATA_IMG=userdata_ubifs
-CACHE_IMG=cache_ubifs
 ANDROID_PATH=$PWD
 ATMEL_RELEASE=$ANDROID_PATH/device/atmel/release
 ANDROID_PRODUCT=$ANDROID_PATH/out/target/product
@@ -58,7 +57,7 @@ success_cmd()
 {
 	echo "Done!"
 	recover_stdout_stderr;
-	echo "Success:you can get $SYS_NAME, $DATA_NAME and $CACHE_NAME under current directory!"
+	echo "Success:you can get $SYS_NAME, $DATA_NAME under current directory!"
 	exit
 }
 
@@ -99,10 +98,6 @@ rm_ubifs()
 	if [ -e ./$DATA_NAME ];then
 	check_cmd "rm -rf ./$DATA_NAME"
 	fi
-
-	if [ -e ./$CACHE_NAME ];then
-	check_cmd "rm -rf ./$CACHE_NAME"
-	fi
 }
 
 rm_img()
@@ -128,7 +123,6 @@ do
                     BOARD_ID=SAMA5D3
                     SYS_NAME=$SYSTEM_IMG-$BOARD_ID-$ANDROID_VERSION.img
                     DATA_NAME=$USERDATA_IMG-$BOARD_ID-$ANDROID_VERSION.img
-                    CACHE_NAME=$CACHE_IMG-$BOARD_ID-$ANDROID_VERSION.img
 					;;
 
                 "sama5d4" )
@@ -136,7 +130,6 @@ do
                     BOARD_ID=SAMA5D4
                     SYS_NAME=$SYSTEM_IMG-$BOARD_ID-$ANDROID_VERSION.img
                     DATA_NAME=$USERDATA_IMG-$BOARD_ID-$ANDROID_VERSION.img
-                    CACHE_NAME=$CACHE_IMG-$BOARD_ID-$ANDROID_VERSION.img
                                         ;;
 
                 "sama5d3isi" )
@@ -144,7 +137,6 @@ do
                     BOARD_ID=SAMA5D3ISI
                     SYS_NAME=$SYSTEM_IMG-$BOARD_ID-$ANDROID_VERSION.img
                     DATA_NAME=$USERDATA_IMG-$BOARD_ID-$ANDROID_VERSION.img
-                    CACHE_NAME=$CACHE_IMG-$BOARD_ID-$ANDROID_VERSION.img
                     ;;
 
                 "sam9x5" )
@@ -195,17 +187,20 @@ check_cmd "cp -a $ANDROID_PRODUCT/$PRODUCT_DEVICE/root ./"
 check_cmd "cd ./root/system/"
 check_cmd "cp -a $ANDROID_PRODUCT/$PRODUCT_DEVICE/system/* ./"
 check_cmd "cd .."
-check_cmd "mkdir ./cache/"
 check_cmd "cp -ru $ANDROID_PRODUCT/$PRODUCT_DEVICE/data ./data"
 check_cmd "chmod 0777 -R ./data"
 
-if [ $BOARD_ID = "SAM9X5" ] || [ $BOARD_ID = "SAMA5D3" ] || [ $BOARD_ID = "SAMA5D3ISI" ] || [ $BOARD_ID = "SAMA5D4" ]; then
+if [ $BOARD_ID = "SAM9X5" ] || [ $BOARD_ID = "SAMA5D3" ] || [ $BOARD_ID = "SAMA5D3ISI" ]; then
 	check_cmd "mkfs.ubifs -m 2KiB -e 124KiB -c 1105 -o system_ubifs.img -d system/"
 	check_cmd "mkfs.ubifs -m 2KiB -e 124KiB -c 984 -o userdata_ubifs.img -d  data/"
-	check_cmd "mkfs.ubifs -m 2KiB -e 124KiB -c 1230 -o cache_ubifs.img -d  cache/"
 	check_cmd "ubinize -o ../$SYS_NAME -m 2KiB -p 128KiB -s 2048 ../system_ubi.cfg"
 	check_cmd "ubinize -o  ../$DATA_NAME -m 2KiB -p 128KiB -s 2048 ../userdata_ubi.cfg"
-	check_cmd "ubinize -o  ../$CACHE_NAME -m 2KiB -p 128KiB -s 2048 ../cache_ubi.cfg"
+
+elif [ $BOARD_ID = "SAMA5D4" ]; then
+	check_cmd "mkfs.ubifs -m 4KiB -e 248KiB -c 1105 -o system_ubifs.img -d system/"
+	check_cmd "mkfs.ubifs -m 4KiB -e 248KiB -c 984 -o userdata_ubifs.img -d  data/"
+	check_cmd "ubinize -o ../$SYS_NAME -m 4KiB -p 256KiB -s 4096 ../system_ubi.cfg"
+	check_cmd "ubinize -o  ../$DATA_NAME -m 4KiB -p 256KiB -s 4096 ../userdata_ubi.cfg"
 
 elif [ $BOARD_ID = "SAM9M10" ] || [ $BOARD_ID = "SAM9G45" ] ; then
 	check_cmd "mkfs.ubifs -x lzo -m 2KiB -e 129024 -c 720 -o system_ubifs.img -d system/"
@@ -215,7 +210,6 @@ elif [ $BOARD_ID = "SAM9M10" ] || [ $BOARD_ID = "SAM9G45" ] ; then
 fi
 check_cmd "cp ../$SYS_NAME $ANDROID_PATH/"
 check_cmd "cp ../$DATA_NAME $ANDROID_PATH/"
-check_cmd "cp ../$CACHE_NAME $ANDROID_PATH/"
 check_cmd "cd $ATMEL_RELEASE/Generate_ubifs_image/"
 rm_root;
 rm_ubifs;
