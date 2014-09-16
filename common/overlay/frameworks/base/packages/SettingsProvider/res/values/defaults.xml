@@ -19,4 +19,5 @@
 <resources>
     <!-- Change screen timeout time from 1 minute to 10 minute -->
     <integer name="def_screen_off_timeout">600000</integer>
+    <bool name="def_sound_effects_enabled">false</bool>
 </resources>
