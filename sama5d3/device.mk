@@ -49,6 +49,10 @@ PRODUCT_PACKAGES += \
         hwcomposer.$(TARGET_BOOTLOADER_BOARD_NAME) \
         copybit.$(TARGET_BOOTLOADER_BOARD_NAME) \
         camera.$(TARGET_BOOTLOADER_BOARD_NAME) \
+        camera.softwareencoder.jpeg \
+        libhardwareloader \
+        camera.goldfish \
+        camera.goldfish.jpeg \
         libGLES_ATMEL_SAM \
         PicoLangInstaller
 
