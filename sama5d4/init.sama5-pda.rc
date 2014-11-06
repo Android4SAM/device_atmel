@@ -17,6 +17,8 @@ on init
 
 # Change the vm heap size (default 16m)
    setprop dalvik.vm.heapsize 32m
+   setprop qemu.sf.fake_camera back
+   setprop qemu.sf.back_camera_hal 1
    
    mkdir /mnt/shell/emulated 0700 shell shell   
    mkdir /storage/emulated 0555 root root    
