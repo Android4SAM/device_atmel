@@ -1,6 +1,6 @@
-# mount point	fstype		device
-/sdcard		vfat		/dev/block/mmcblk0p1	/dev/block/mmcblk0 
-/system		ubifs		ubi0_0
-/data		ubifs		ubi1_0
-/cache		ubifs		ubi2_0
-/misc		mtd		misc
+ubi0_0                  /system     ubifs   defaults    defaults
+ubi1_0                  /data       ubifs   defaults    defaults
+ubi2_0                  /cache      ubifs   defaults    defaults
+misc                    /misc       mtd     defaults    defaults
+/dev/block/mmcblk0p1    /sdcard     vfat    defaults    defaults
+
