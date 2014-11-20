@@ -32,3 +32,7 @@ function mksd_image()
         sudo $(gettop)/device/atmel/release/Generate_sdcard_image/sdimage.sh $*
 }
 
+function mk_updatepackage4nandflash()
+{
+        $(gettop)/device/atmel/release/Generate_update_package/update4nandflash.sh $*
+}

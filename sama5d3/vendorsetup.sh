@@ -37,9 +37,9 @@ function mkext4_image()
         sudo $(gettop)/device/atmel/release/Generate_sdcard_image/ext4image.sh $*
 }
 
-function mk_updatepackage()
+function mk_updatepackage4nandflash()
 {
-	$(gettop)/device/atmel/release/Generate_update_package/update.sh $*
+        $(gettop)/device/atmel/release/Generate_update_package/update4nandflash.sh $*
 }
 function mk_updatepackage4sdcard()
 {

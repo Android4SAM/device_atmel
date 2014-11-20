@@ -1,29 +1,31 @@
 #!/bin/bash
 #
-# update.sh - Generate the android update package.
+# update4nandflash.sh - Generate the android update package for nandflash.
 #
-ANDROID_VERSION=ANDROID-4.2.2_r1.1
+ANDROID_VERSION=ANDROID-4.4.2_r2
 ANDROID_PATH=$PWD
 ATMEL_RELEASE=$ANDROID_PATH/device/atmel/release
 ANDROID_PRODUCT_OUT=$ANDROID_PATH/out/target/product/sama5d3
 META_INF=update/META-INF/com/google/android
 UPDATE_BINARY=update/META-INF/com/google/android/update-binary
 UPDATER_SCRIPT=update/META-INF/com/google/android/updater-script
-BOARD_ID=SAMA5D3
-UPDATE_PACKAGE_NAME=update-$BOARD_ID-$ANDROID_VERSION.zip
+
 
 ERRLOGFILE=make_update_package.log
 
 Update_system_image="false"
 
-HELP_MESSAGE=("mk_updatepackage [-d dtb_file_dir] [-k kernel_image_dir] [-s]\n
+HELP_MESSAGE=("mk_updatepackage4nandflash -b build_target [-d dtb_file_dir] [-k kernel_image_dir] [-s]\n
+  -b Specify the build target. We now support sama5d3 | sama5d4.
   -d Update the dtb files, you can specify 'dtb_file_dir' directly to the dtb file name or just to the path of the dtb files.
   -k Update the kernel image, you should specify 'kernel_image_dir' directly to uImage.
   -s Update android system image.
   -h Print help message\n"
+  "We only support the following build targets\nsama5d3 | sama5d4\n"
   "You must specify a correct dtb file path after -d parameter\n"
-  "You must specify a correct kernel image file path after -k parameter\n")
-	
+  "You must specify a correct kernel image file path after -k parameter\n"
+  "You must specify build target.\nExample: -b sama5d3\n")
+
 HELP()
 {
 	echo
@@ -99,6 +101,47 @@ if [ -z "$1" ];then
 	HELP 0;
 fi
 
+
+until [ -z "$1" ]
+do
+	case "$1" in
+		"-b" )
+			shift
+			build_target=$1
+			case "$build_target" in
+				"sama5d3" )
+				BOARD_ID=SAMA5D3
+				UPDATE_PACKAGE_NAME=update-$BOARD_ID-$ANDROID_VERSION-nandflash.zip
+				;;
+				"sama5d4" )
+				BOARD_ID=SAMA5D4
+				UPDATE_PACKAGE_NAME=update-$BOARD_ID-$ANDROID_VERSION-nandflash.zip
+				;;
+				* )
+					HELP 1;
+				;;
+			esac
+			break
+		;;
+		"-h" )
+			HELP 0;
+			break
+		;;
+		"--h" )
+			HELP 0;
+			break
+		;;
+		* )
+			HELP 0;
+		;;
+	esac
+	shift
+done
+
+if [ -z "$BOARD_ID" ];then
+	HELP 4;
+fi
+
 until [ -z "$1" ]
 do
 	case "$1" in
@@ -112,7 +155,7 @@ do
 			elif [ -d $dtb_file_dir ];then
 				echo "We will update dtb file under: $dtb_file_dir"
 			else
-				HELP 1;
+				HELP 2;
 			fi
 		;;
 		"-k" )
@@ -123,7 +166,7 @@ do
 			elif [ -f $kernel_image_dir ];then
 				echo "We will update kernel image:  ${kernel_image_dir##*/}"
 			else
-				HELP 2;
+				HELP 3;
 			fi
 		;;
 		"-s" )
@@ -155,15 +198,15 @@ if [ ! -z $dtb_file_dir ];then
 		check_cmd "cp $dtb_file_dir update/"
 	elif [ -d $dtb_file_dir ];then
 		if [ -z ${dtb_file_dir##*/} ];then
-			check_cmd "cp "$dtb_file_dir"sama5d3*.dtb update/"
+			check_cmd "cp "$dtb_file_dir"sama5*.dtb update/"
 		else
-			check_cmd "cp "$dtb_file_dir"/sama5d3*.dtb update/"
+			check_cmd "cp "$dtb_file_dir"/sama5*.dtb update/"
 		fi
 	fi
 	echo -e "ui_print(\"Updating dtb...\");" >> $UPDATER_SCRIPT
-	echo -e "package_extract_file(choose_dtb_file_auto(),\"/tmp/sama5d3xek.dtb\");" >> $UPDATER_SCRIPT
-	echo -e "write_raw_image(\"/tmp/sama5d3xek.dtb\", \"dtb\");" >> $UPDATER_SCRIPT
-	echo -e "delete(\"/tmp/sama5d3xek.dtb\");\n" >> $UPDATER_SCRIPT
+	echo -e "package_extract_file(choose_dtb_file_auto(),\"/tmp/sama5.dtb\");" >> $UPDATER_SCRIPT
+	echo -e "write_raw_image(\"/tmp/sama5.dtb\", \"dtb\");" >> $UPDATER_SCRIPT
+	echo -e "delete(\"/tmp/sama5.dtb\");\n" >> $UPDATER_SCRIPT
 fi
 
 if [ ! -z $kernel_image_dir ]; then
@@ -179,8 +222,8 @@ fi
 if [ $Update_system_image = "true" ];then
 	check_cmd "cd $ANDROID_PATH"
 	source build/envsetup.sh
-	check_cmd "mkubi_image -b sama5d3"
-	p=`ls system_ubifs*.img`
+	check_cmd "mkubi_image -b $build_target"
+	p=`ls system_ubifs-$BOARD_ID*.img`
 	check_cmd "cp $p $ATMEL_RELEASE/Generate_update_package/update/"
 	check_cmd "cd $ATMEL_RELEASE/Generate_update_package/"
 	echo -e "ui_print(\"Updating system...\");" >> $UPDATER_SCRIPT
