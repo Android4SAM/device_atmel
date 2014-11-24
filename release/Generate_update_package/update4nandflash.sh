@@ -213,9 +213,9 @@ if [ ! -z $kernel_image_dir ]; then
 	if [ -f $kernel_image_dir ];then
 		check_cmd "cp $kernel_image_dir update/"
 		echo -e "ui_print(\"Updating boot...\");" >> $UPDATER_SCRIPT
-		echo -e "package_extract_file(\"uImage\",\"/tmp/uImage\");" >> $UPDATER_SCRIPT
-		echo -e "write_raw_image(\"/tmp/uImage\", \"boot\");" >> $UPDATER_SCRIPT
-		echo -e "delete(\"/tmp/uImage\");\n" >> $UPDATER_SCRIPT
+		echo -e "package_extract_file(\"zImage\",\"/tmp/zImage\");" >> $UPDATER_SCRIPT
+		echo -e "write_raw_image(\"/tmp/zImage\", \"boot\");" >> $UPDATER_SCRIPT
+		echo -e "delete(\"/tmp/zImage\");\n" >> $UPDATER_SCRIPT
 	fi
 fi
 
