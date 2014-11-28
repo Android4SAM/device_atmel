@@ -15,9 +15,9 @@ SYSTEM_IMAGE_NAME=system.img
 ROOTFS_IMAGE_SIZE=320
 
 HELP_MESSAGE=("mkext4_image -b build_target\n
-    -b Specify the build target. We now support sama5d3 | sama5d3isi.
+    -b Specify the build target. We now support sama5d3 | sama5d4.
     -h Print help message\n"
-    "We only support the following build targets\n sama5d3 | sama5d3isi\n"
+    "We only support the following build targets\n sama5d3 | sama5d4\n"
     "You must specify build target.\nExample: -b sama5d3\n")
 
 HELP()
@@ -118,7 +118,7 @@ do
                     PRODUCT_DEVICE=$1
                     ;;
 
-                "sama5d3isi" )
+                "sama5d4" )
                     PRODUCT_DEVICE=$1
                     ;;
                 * )
