@@ -11,7 +11,7 @@ ANDROID_PATH=$PWD
 EXT4_MNT_DIR=/tmp/mnt_dir
 ATMEL_SDCARD_TOOL=$ANDROID_PATH/device/atmel/release/Generate_sdcard_image
 ERRLOGFILE=$ANDROID_PATH/make_android_ext4_image.log
-ROOTFS_IMAGE_NAME=android_ext4_image.img
+SYSTEM_IMAGE_NAME=system.img
 ROOTFS_IMAGE_SIZE=320
 
 HELP_MESSAGE=("mkext4_image -b build_target\n
@@ -58,7 +58,7 @@ success_cmd()
 {
     echo "Done!"
     recover_stdout_stderr;
-    echo "Success:you can get $ROOTFS_IMAGE_NAME under current directory!"
+    echo "Success:you can get $SYSTEM_IMAGE_NAME under current directory!"
     exit
 }
 
@@ -98,8 +98,8 @@ rm_dir()
 
 rm_img()
 {
-    if [ -e ./$ROOTFS_IMAGE_NAME ];then
-    check_cmd "rm ./$ROOTFS_IMAGE_NAME"
+    if [ -e ./$SYSTEM_IMAGE_NAME ];then
+    check_cmd "rm ./$SYSTEM_IMAGE_NAME"
     fi
 }
 
@@ -147,28 +147,22 @@ check_cmd "cd $ATMEL_SDCARD_TOOL"
 rm_dir $EXT4_MNT_DIR >&6
 rm_img;
 
-check_cmd "dd if=/dev/zero of=./$ROOTFS_IMAGE_NAME bs=1M count=$ROOTFS_IMAGE_SIZE"
+check_cmd "dd if=/dev/zero of=./$SYSTEM_IMAGE_NAME bs=1M count=$ROOTFS_IMAGE_SIZE"
 
 recover_stdout_stderr;
-check_cmd "mkfs.ext4 -b 4096 $ROOTFS_IMAGE_NAME"
+check_cmd "mkfs.ext4 -b 4096 $SYSTEM_IMAGE_NAME"
 redirect_stdout_stderr;
 
 check_cmd "mkdir $EXT4_MNT_DIR"
-check_cmd "mount -t ext4 -o loop $ROOTFS_IMAGE_NAME $EXT4_MNT_DIR"
+check_cmd "mount -t ext4 -o loop $SYSTEM_IMAGE_NAME $EXT4_MNT_DIR"
 
-check_cmd "cp -a $ANDROID_PATH/out/target/product/$PRODUCT_DEVICE/root/* $EXT4_MNT_DIR"
-check_cmd "cp -a $ANDROID_PATH/out/target/product/$PRODUCT_DEVICE/system/* $EXT4_MNT_DIR/system/"
-check_cmd "cp $EXT4_MNT_DIR/system/initlogo.rle $EXT4_MNT_DIR/"
-check_cmd "cp -a $ANDROID_PATH/out/target/product/$PRODUCT_DEVICE/data/* $EXT4_MNT_DIR/data/"
-check_cmd "chmod 0777 -R $EXT4_MNT_DIR/data/"
-check_cmd "cp boot_$PRODUCT_DEVICE/vold.fstab $EXT4_MNT_DIR/system/etc/vold.fstab"
-check_cmd "cp boot_$PRODUCT_DEVICE/init.rc $EXT4_MNT_DIR/init.rc"
+check_cmd "cp -a $ANDROID_PATH/out/target/product/$PRODUCT_DEVICE/system/* $EXT4_MNT_DIR"
 
 check_cmd "sync"
 
 check_cmd "umount $EXT4_MNT_DIR"
 
-check_cmd "cp $ROOTFS_IMAGE_NAME $ANDROID_PATH/"
+check_cmd "cp $SYSTEM_IMAGE_NAME $ANDROID_PATH/"
 
 rm_dir $EXT4_MNT_DIR >&6
 rm_img;
