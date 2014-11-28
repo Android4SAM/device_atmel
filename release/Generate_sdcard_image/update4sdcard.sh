@@ -2,25 +2,26 @@
 #
 # update4sdcard.sh - Generate the android update package.
 #
-ANDROID_VERSION=ANDROID-4.2.2_r1.1
+ANDROID_VERSION=ANDROID-4.4.2_r2
 ANDROID_PATH=$PWD
 ATMEL_RELEASE=$ANDROID_PATH/device/atmel/release
 TMP_UPDATE_DIR=/tmp/update
 META_INF=$TMP_UPDATE_DIR/META-INF/com/google/android
+DTBS_DIR=$TMP_UPDATE_DIR/dtbs
 UPDATE_BINARY=$TMP_UPDATE_DIR/META-INF/com/google/android/update-binary
 UPDATER_SCRIPT=$TMP_UPDATE_DIR/META-INF/com/google/android/updater-script
-ROOTFS_IMAGE_PATH=$ANDROID_PATH/android_ext4_image.img
+SYSTEM_IMAGE_PATH=$ANDROID_PATH/system.img
 ERRLOGFILE=$ANDROID_PATH/make_update_package.log
 
-Update_rootfs_image="false"
+Update_system_image="false"
 
 HELP_MESSAGE=("mk_updatepackage4sdcard -b build_target [-d dtb_file_dir] [-k kernel_image_dir] [-s]\n
-  -b Specify the build target. We now support sama5d3 | sama5d3isi.
+  -b Specify the build target. We now support sama5d3 | sama5d4.
   -d Update the dtb files, you can specify 'dtb_file_dir' directly to the dtb file name or just to the path of the dtb files.
   -k Update the kernel image, you should specify 'kernel_image_dir' directly to uImage.
   -s Update android system image.
   -h Print help message\n"
-  "We only support the following build targets: \nsama5d3 | sama5d3isi\n"
+  "We only support the following build targets: \nsama5d3 | sama5d4\n"
   "You must specify build target.\nExample: -b sama5d3\n"
   "You must specify a correct dtb file path after -d parameter\n"
   "You must specify a correct kernel image file path after -k parameter\n")
@@ -124,9 +125,9 @@ do
 					UPDATE_PACKAGE_NAME=update-$BOARD_ID-$ANDROID_VERSION-sdcard.zip
 					UPDATE_PACKAGE_FILE=$ANDROID_PATH/$UPDATE_PACKAGE_NAME
 				;;
-				"sama5d3isi" )
+				"sama5d4" )
 					PRODUCT_DEVICE=$1
-					BOARD_ID=SAMA5D3ISI
+					BOARD_ID=SAMA5D4
 					ANDROID_PRODUCT_OUT=$ANDROID_PATH/out/target/product/$PRODUCT_DEVICE
 					UPDATE_PACKAGE_NAME=update-$BOARD_ID-$ANDROID_VERSION-sdcard.zip
 					UPDATE_PACKAGE_FILE=$ANDROID_PATH/$UPDATE_PACKAGE_NAME
@@ -166,8 +167,8 @@ do
 			fi
 		;;
 		"-s" )
-			echo "We will update android rootfs image"
-			Update_rootfs_image="true"
+			echo "We will update android system image"
+			Update_system_image="true"
 		;;
 		"-h" )
 			HELP 0;
@@ -191,6 +192,7 @@ rm_update;
 rm_zip "$UPDATE_PACKAGE_FILE";
 check_cmd "mkdir $TMP_UPDATE_DIR"
 check_cmd "mkdir -p $META_INF/"
+check_cmd "mkdir -p $DTBS_DIR/"
 echo -e "show_progress(0.8, 40);\n" > $UPDATER_SCRIPT
 check_cmd "cp $ANDROID_PRODUCT_OUT/system/bin/updater $UPDATE_BINARY"
 
@@ -198,20 +200,20 @@ if [ ! -z $dtb_file_dir ]
 then
 	if [ -f $dtb_file_dir ]
 	then
-		check_cmd "cp $dtb_file_dir $TMP_UPDATE_DIR"
+		check_cmd "cp $dtb_file_dir $DTBS_DIR"
 	elif [ -d $dtb_file_dir ]
 	then
 		if [ -z ${dtb_file_dir##*/} ]
 		then
-			check_cmd "cp "$dtb_file_dir"sama5d3*.dtb $TMP_UPDATE_DIR"
+			check_cmd "cp "$dtb_file_dir"sama5d3*.dtb $DTBS_DIR"
 		else
-			check_cmd "cp "$dtb_file_dir"/sama5d3*.dtb $TMP_UPDATE_DIR"
+			check_cmd "cp "$dtb_file_dir"/sama5d3*.dtb $DTBS_DIR"
 		fi
 	fi
 	echo -e "ui_print(\"Updating dtb...\");" >> $UPDATER_SCRIPT
-	echo -e "mount(\"vfat\", \"EMMC\", \"/dev/block/mmcblk0p1\", \"/cache\");" >> $UPDATER_SCRIPT
-	echo -e "package_extract_file(choose_dtb_file_auto(), \"/cache/dtb\");" >> $UPDATER_SCRIPT
-	echo -e "unmount(\"/cache\");\n" >> $UPDATER_SCRIPT
+	echo -e "mount(\"vfat\", \"EMMC\", \"/dev/block/mmcblk0p1\", \"/boot\");" >> $UPDATER_SCRIPT
+	echo -e "package_extract_dir(dtbs, \"/boot\");" >> $UPDATER_SCRIPT
+	echo -e "unmount(\"/boot\");\n" >> $UPDATER_SCRIPT
 fi
 
 if [ ! -z $kernel_image_dir ]
@@ -220,19 +222,19 @@ then
 	then
 		check_cmd "cp $kernel_image_dir $TMP_UPDATE_DIR"
 		echo -e "ui_print(\"Updating kernel...\");" >> $UPDATER_SCRIPT
-		echo -e "mount(\"vfat\", \"EMMC\", \"/dev/block/mmcblk0p1\", \"/cache\");" >> $UPDATER_SCRIPT
-		echo -e "package_extract_file(\"uImage\", \"/cache/uImage\");" >> $UPDATER_SCRIPT
-		echo -e "unmount(\"/cache\");\n" >> $UPDATER_SCRIPT
+		echo -e "mount(\"vfat\", \"EMMC\", \"/dev/block/mmcblk0p1\", \"/boot\");" >> $UPDATER_SCRIPT
+		echo -e "package_extract_file(\"zImage\", \"/boot/zImage\");" >> $UPDATER_SCRIPT
+		echo -e "unmount(\"/boot\");\n" >> $UPDATER_SCRIPT
 	fi
 fi
 
-if [ $Update_rootfs_image = "true" ]
+if [ $Update_system_image = "true" ]
 then
-	check_cmd "cp $ROOTFS_IMAGE_PATH $TMP_UPDATE_DIR"
-	echo -e "ui_print(\"Updating Android RootFS...\");" >> $UPDATER_SCRIPT
-	echo -e "package_extract_file(\"android_ext4_image.img\",\"/tmp/rootfs.img\");" >> $UPDATER_SCRIPT
-	echo -e "write_ext4_image(\"/tmp/rootfs.img\", \"/dev/block/mmcblk0p2\");" >> $UPDATER_SCRIPT 
-	echo -e "delete(\"/tmp/rootfs.img\");\n" >> $UPDATER_SCRIPT
+	check_cmd "cp $SYSTEM_IMAGE_PATH $TMP_UPDATE_DIR"
+	echo -e "ui_print(\"Updating Android System image...\");" >> $UPDATER_SCRIPT
+	echo -e "package_extract_file(\"system.img\",\"/tmp/system.img\");" >> $UPDATER_SCRIPT
+	echo -e "write_ext4_image(\"/tmp/system.img\", \"/dev/block/mmcblk0p2\");" >> $UPDATER_SCRIPT
+	echo -e "delete(\"/tmp/system.img\");\n" >> $UPDATER_SCRIPT
 fi
 
 echo -e "show_progress(0.1, 0);\n" >> $UPDATER_SCRIPT
