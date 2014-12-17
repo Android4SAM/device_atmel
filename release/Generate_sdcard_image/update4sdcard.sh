@@ -205,9 +205,9 @@ then
 	then
 		if [ -z ${dtb_file_dir##*/} ]
 		then
-			check_cmd "cp "$dtb_file_dir"sama5*.dtb $DTBS_DIR"
+			check_cmd "cp "$dtb_file_dir"*sama5*.dtb $DTBS_DIR"
 		else
-			check_cmd "cp "$dtb_file_dir"/sama5*.dtb $DTBS_DIR"
+			check_cmd "cp "$dtb_file_dir"/*sama5*.dtb $DTBS_DIR"
 		fi
 	fi
 	echo -e "ui_print(\"Updating dtb...\");" >> $UPDATER_SCRIPT
