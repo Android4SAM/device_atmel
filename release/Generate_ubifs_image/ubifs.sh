@@ -207,7 +207,7 @@ if [ $BOARD_ID = "SAM9X5" ] || [ $BOARD_ID = "SAMA5D3" ]; then
 elif [ $BOARD_ID = "SAMA5D4" ]; then
 	check_cmd "mkfs.ubifs -m 4KiB -e 248KiB -c 1049 -o system_ubifs.img -d system/"
 	check_cmd "mkfs.ubifs -m 4KiB -e 248KiB -c 984 -o userdata_ubifs.img -d  data/"
-	check_cmd "mkfs.ubifs -m 4KiB -e 248KiB -c 1230 -o cache_ubifs.img -d  cache/"
+	check_cmd "mkfs.ubifs -m 4KiB -e 248KiB -c 64 -o cache_ubifs.img -d  cache/"
 	check_cmd "ubinize -o ../$SYS_NAME -m 4KiB -p 256KiB -s 4096 ../system_ubi.cfg"
 	check_cmd "ubinize -o  ../$DATA_NAME -m 4KiB -p 256KiB -s 4096 ../userdata_ubi.cfg"
 	check_cmd "ubinize -o  ../$CACHE_NAME -m 4KiB -p 256KiB -s 4096 ../cache_ubi.cfg"
