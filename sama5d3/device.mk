@@ -18,6 +18,9 @@ $(call inherit-product, device/atmel/common/config/Android_Copy.mk)
 # Atmel boot logo
 $(call inherit-product, device/atmel/common/bootlogo/Android_Copy.mk)
 
+# Atmel wifi firmware
+$(call inherit-product,device/atmel/common/firmware/Android_Copy.mk)
+
 #Enabling Ring Tones
 $(call inherit-product-if-exists, frameworks/base/data/sounds/AllAudio.mk)
 
