@@ -2,7 +2,7 @@
 #
 # update4nandflash.sh - Generate the android update package for nandflash.
 #
-ANDROID_VERSION=ANDROID-4.4.2_r2
+ANDROID_VERSION=ANDROID-4.4w
 ANDROID_PATH=$PWD
 ATMEL_RELEASE=$ANDROID_PATH/device/atmel/release
 ANDROID_PRODUCT_OUT=$ANDROID_PATH/out/target/product/sama5d3
