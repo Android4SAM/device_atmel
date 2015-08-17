@@ -74,4 +74,6 @@ PRODUCT_COPY_FILES += \
 	frameworks/native/data/etc/android.hardware.touchscreen.multitouch.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.xml
 PRODUCT_PROPERTY_OVERRIDES += ro.config.low_ram=true \
                               wifi.interface=wlan0   \
-                              dalvik.vm.jit.codecachesize=0
+                              dalvik.vm.jit.codecachesize=0 \
+                              ro.disp.conn.primary=LVDS \
+                              ro.disp.conn.external=OFF
