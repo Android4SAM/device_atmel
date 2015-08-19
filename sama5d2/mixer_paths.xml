@@ -1,0 +1,4 @@
+<mixer>
+  <!-- These are the initial mixer settings -->
+  <ctl name="Capture Switch" value="1" />
+</mixer>
