@@ -1,4 +1,5 @@
 <mixer>
   <!-- These are the initial mixer settings -->
-  <ctl name="Capture Switch" value="1" />
+  <ctl name="Left Volume" value="71" />
+  <ctl name="Right Volume" value="71" />
 </mixer>
