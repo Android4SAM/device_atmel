@@ -215,6 +215,11 @@ do
                                         BOARD_ID=SAMA5D4
                                         SD_IMAGE_NAME=$BOARD_ID-$ANDROID_VERSION-$RELEASE_VERSION.img
                                 ;;
+				"sama5d2" )
+                                        PRODUCT_DEVICE=$1
+                                        BOARD_ID=SAMA5D2
+                                        SD_IMAGE_NAME=$BOARD_ID-$ANDROID_VERSION-$RELEASE_VERSION.img
+                                ;;
 				* )
 					HELP 1;
 				;;
