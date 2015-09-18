@@ -145,6 +145,10 @@ on fs
 #    mount yaffs2 mtd@userdata /data nosuid nodev
 #    mount yaffs2 mtd@cache /cache nosuid nodev
 
+# mount emmc system and data
+     mount ext4 /dev/block/mmcblk0p1 /system ro
+     mount ext4 /dev/block/mmcblk0p2 /data nosuid nodev
+
 on post-fs
     # once everything is setup, no need to modify /
     mount rootfs rootfs / ro remount
