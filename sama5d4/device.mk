@@ -35,7 +35,9 @@ PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/mixer_paths.xml:system/etc/mixer_paths.xml \
         $(LOCAL_PATH)/ueventd.sama5-ek.rc:root/ueventd.sama5-ek.rc \
         $(LOCAL_PATH)/ueventd.sama5-pda.rc:root/ueventd.sama5-pda.rc \
-        $(LOCAL_PATH)/init.sama5d4.usb.rc:root/init.sama5d4.usb.rc
+        $(LOCAL_PATH)/init.sama5d4.usb.rc:root/init.sama5d4.usb.rc \
+        $(LOCAL_PATH)/fstab.sama5-pda:root/fstab.sama5-pda \
+        $(LOCAL_PATH)/fstab.sama5-ek:root/fstab.sama5-ek
 
 PRODUCT_COPY_FILES += \
 		$(LOCAL_PATH)/libstagefrighthw.so:system/lib/libstagefrighthw.so \

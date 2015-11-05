@@ -1,0 +1,2 @@
+/devices/ahb/ahb:apb/fc000000.mmc/ auto  vfat  defaults  voldmanaged=sdcard1:auto
+/block/sda      /mnt/media_rw/udisk0  vfat  defaults  voldmanaged=udisk0:auto
