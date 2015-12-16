@@ -37,11 +37,6 @@ PRODUCT_COPY_FILES += \
         $(LOCAL_PATH)/ueventd.sama5-pda.rc:root/ueventd.sama5-pda.rc \
         $(LOCAL_PATH)/init.sama5d2.usb.rc:root/init.sama5d2.usb.rc
 
-PRODUCT_COPY_FILES += \
-		$(LOCAL_PATH)/libstagefrighthw.so:system/lib/libstagefrighthw.so \
-		$(LOCAL_PATH)/libhantro_omx_core.so:system/lib/libhantro_omx_core.so \
-		$(LOCAL_PATH)/libOMX.hantro.G1.video.decoder.so:system/lib/libOMX.hantro.G1.video.decoder.so
-
 PRODUCT_PACKAGES += \
         AtmelLogo \
         Ethernet \
