@@ -1,3 +1,3 @@
 /devices/ahb/ahb:apb/f0000000.mmc/ auto  vfat  defaults  voldmanaged=sdcard1:auto
 /devices/ahb/ahb:apb/f8000000.mmc/ auto  vfat  defaults  voldmanaged=sdcard2:auto
-/block/sda      /mnt/media_rw/udisk0  vfat  defaults  voldmanaged=udisk0:auto
+/devices/ahb/700000.ehci /mnt/media_rw/udisk0  vfat  defaults  voldmanaged=udisk0:auto

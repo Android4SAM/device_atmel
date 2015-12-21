@@ -1,2 +1,2 @@
 /devices/ahb/b0000000.sdio-host auto  vfat  defaults  voldmanaged=sdcard1:auto
-/block/sda      /mnt/media_rw/udisk0  vfat  defaults  voldmanaged=udisk0:auto
+/devices/ahb/500000.ehci /mnt/media_rw/udisk0  vfat  defaults  voldmanaged=udisk0:auto
