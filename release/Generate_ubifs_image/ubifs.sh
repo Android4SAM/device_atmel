@@ -194,7 +194,7 @@ check_cmd "cd ./root/system/"
 check_cmd "cp -a $ANDROID_PRODUCT/$PRODUCT_DEVICE/system/* ./"
 check_cmd "cd .."
 check_cmd "mkdir ./cache/"
-check_cmd "cp -a $ANDROID_PRODUCT/$PRODUCT_DEVICE/data/* ./data/"
+check_cmd "cp -r $ANDROID_PRODUCT/$PRODUCT_DEVICE/data ./"
 check_cmd "chmod 0777 -R ./data"
 
 if [ $BOARD_ID = "SAM9X5" ] || [ $BOARD_ID = "SAMA5D3" ]; then
